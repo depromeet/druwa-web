@@ -5,7 +5,7 @@
   "main": "src/main.tsx",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "rimraf dist/ && cross-env NODE_ENV=production webpack"
+    "build": "rimraf dist/ && webpack"
   },
   "author": "",
   "private": true,
@@ -38,7 +38,6 @@
     "@typescript-eslint/parser": "^2.12.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-emotion": "^10.0.23",
-    "cross-env": "^6.0.3",
     "css-loader": "^3.4.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.7.0",
