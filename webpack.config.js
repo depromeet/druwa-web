@@ -30,7 +30,7 @@ module.exports = {
       },
     ],
   },
-  devtool: 'inline-source-map',
+  devtool: PROD ? 'source-map' : 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
