@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PORT = process.env.PORT || 4200;
 const PROD = process.env.NODE_ENV === 'production';
-const DEPLOY_URL = process.env.DEPLOY_URL || 'http://localhost:4200';
+const DEPLOY_URL = process.env.URL || 'http://localhost:4200';
 
 module.exports = {
   mode: PROD ? 'production' : 'development',
@@ -40,7 +40,7 @@ module.exports = {
     }),
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.DEPLOY_URL': JSON.stringify(process.env.DEPLOY_URL),
+      'process.env.DEPLOY_URL': JSON.stringify(process.env.URL),
     }),
   ],
   devServer: {
