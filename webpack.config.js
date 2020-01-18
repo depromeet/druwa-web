@@ -10,6 +10,7 @@ module.exports = {
   entry: './src/main.tsx',
   output: {
     path: path.resolve(__dirname, 'dist/'),
+    publicPath: PROD ? 'https://druwa.netlify.com' : 'http://localhost:4200',
   },
   resolve: {
     extensions: ['.ts', '.js', '.tsx', '.jsx'],
@@ -38,10 +39,12 @@ module.exports = {
     }),
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL),
     }),
   ],
   devServer: {
     host: 'localhost',
+    contentBase: path.resolve(__dirname, 'dist/'),
     port: PORT,
     open: false,
     historyApiFallback: true,
