@@ -8,7 +8,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #141516;
 }
 
 body {
@@ -17,16 +17,5 @@ body {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.43;
-  color: #000000;
-}
-
-@media (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #141516;
-  }
-
-  body {
-    color: #ffffff;
-  }
+  color: #ffffff;
 }
