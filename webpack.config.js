@@ -4,12 +4,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PORT = process.env.PORT || 4200;
 const PROD = process.env.NODE_ENV === 'production';
+const DEPLOY_URL = process.env.DEPLOY_URL || 'http://localhost:4200';
 
 module.exports = {
   mode: PROD ? 'production' : 'development',
   entry: './src/main.tsx',
   output: {
     path: path.resolve(__dirname, 'dist/'),
+    publicPath: DEPLOY_URL,
   },
   resolve: {
     extensions: ['.ts', '.js', '.tsx', '.jsx'],
@@ -38,10 +40,12 @@ module.exports = {
     }),
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.DEPLOY_URL': JSON.stringify(process.env.DEPLOY_URL),
     }),
   ],
   devServer: {
     host: 'localhost',
+    contentBase: path.resolve(__dirname, 'dist/'),
     port: PORT,
     open: false,
     historyApiFallback: true,

@@ -1,4 +1,4 @@
-const isProduction = process.env.NODE_ENV === 'production';
+import { isProduction } from '../../environment';
 
 const id = function<T>(x: T) {
   return x;
