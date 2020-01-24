@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useSpring } from 'react-spring';
-import { EMPTY, fromEvent } from 'rxjs';
+import { EMPTY, fromEvent, merge } from 'rxjs';
 import { useEventCallback, useObservable } from 'rxjs-hooks';
 import {
   auditTime,
@@ -73,7 +73,11 @@ export function useSliderNavControl(elem: HTMLElement | null) {
         map(([elem]) => elem),
         filter(isElement),
         switchMap(elem =>
-          fromEvent(elem, 'scroll').pipe(
+          merge(
+            fromEvent(elem, 'scroll'),
+            fromEvent(window, 'resize'),
+            fromEvent(window, 'orientationchange'),
+          ).pipe(
             auditTime(16),
             map(() => getSliderScrollState(elem)),
             tap(state => {
