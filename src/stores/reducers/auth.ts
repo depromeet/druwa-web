@@ -3,7 +3,7 @@ import { ActionType, createReducer } from 'typesafe-actions';
 import { User } from '../../models';
 import * as authActions from '../actions/auth';
 
-const { authorizeWithTokenAction } = authActions;
+const { authorizeWithTokenActions } = authActions;
 
 export type AuthState = Readonly<{
   isAuthorized: boolean;
@@ -16,7 +16,7 @@ export const authReducer = createReducer<AuthState, ActionType<typeof authAction
   token: null,
   user: null,
 })
-  .handleAction(authorizeWithTokenAction.success, (state, action) => {
+  .handleAction(authorizeWithTokenActions.success, (state, action) => {
     const { token, user } = action.payload;
 
     return produce(state, draft => {
@@ -25,7 +25,7 @@ export const authReducer = createReducer<AuthState, ActionType<typeof authAction
       draft.user = user;
     });
   })
-  .handleAction(authorizeWithTokenAction.failure, state => {
+  .handleAction(authorizeWithTokenActions.failure, state => {
     return produce(state, draft => {
       draft.isAuthorized = false;
       draft.token = null;

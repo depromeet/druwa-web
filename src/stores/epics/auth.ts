@@ -1,24 +1,45 @@
 import { combineEpics } from 'redux-observable';
-import { of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { EMPTY, of } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
-import { authorizeWithTokenAction } from '../actions';
+import { authTokenStorageKey } from '../../constants';
+import { createStorage } from '../../utils';
+import { authorizeWithTokenActions, authorizeWithTokenWhichFromStorageAction } from '../actions';
 import { Epic } from '../types';
+
+const storage = createStorage();
+
+const findTokenFromStorageAndAuthorizeEpic: Epic = action$ =>
+  action$.pipe(
+    filter(isActionOf(authorizeWithTokenWhichFromStorageAction)),
+    switchMap(() => {
+      const token = storage.get(authTokenStorageKey);
+
+      return token !== null ? of(authorizeWithTokenActions.request({ token })) : EMPTY;
+    }),
+  );
 
 const authorizeEpic: Epic = (action$, _, { api }) =>
   action$.pipe(
-    filter(isActionOf(authorizeWithTokenAction.request)),
+    filter(isActionOf(authorizeWithTokenActions.request)),
     switchMap(({ payload: { token } }) =>
       api.authorize(token).pipe(
+        tap(() => {
+          storage.set(authTokenStorageKey, token);
+        }),
         map(user =>
-          authorizeWithTokenAction.success({
+          authorizeWithTokenActions.success({
             user,
             token,
           }),
         ),
-        catchError(error => of(authorizeWithTokenAction.failure({ error }))),
+        catchError(error => {
+          storage.delete(authTokenStorageKey);
+
+          return of(authorizeWithTokenActions.failure({ error }));
+        }),
       ),
     ),
   );
 
-export const authEpic = combineEpics(authorizeEpic);
+export const authEpic = combineEpics(findTokenFromStorageAndAuthorizeEpic, authorizeEpic);
