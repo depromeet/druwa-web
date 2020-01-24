@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -38,6 +39,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
+    new CopyPlugin([
+      {
+        from: path.resolve(__dirname, 'src/assets/'),
+        to: path.resolve(__dirname, 'dist/assets/'),
+      },
+    ]),
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.DEPLOY_URL': JSON.stringify(process.env.URL),
@@ -45,7 +52,7 @@ module.exports = {
   ],
   devServer: {
     host: 'localhost',
-    contentBase: path.resolve(__dirname, 'dist/'),
+    contentBase: path.resolve(__dirname, 'src/'),
     port: PORT,
     open: false,
     historyApiFallback: true,
