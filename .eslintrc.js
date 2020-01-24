@@ -37,6 +37,7 @@ module.exports = {
     '@typescript-eslint/no-parameter-properties': 'off',
     '@typescript-eslint/camelcase': ['error', { properties: 'never', ignoreDestructuring: true }],
     '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    '@typescript-eslint/no-empty-function': 'off',
     'prefer-const': 'error',
     'no-var': 'error',
     curly: ['error', 'all'],
