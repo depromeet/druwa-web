@@ -1,6 +1,9 @@
+export type UserProvider = 'kakao';
+
 export interface User {
-  id: number;
+  name: number;
   email: string;
-  nickname: string;
-  imageUrl: string;
+  provider?: UserProvider;
+  imageUrl?: string;
+  registeredAt: string;
 }
