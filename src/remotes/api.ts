@@ -17,7 +17,7 @@ const authorizationHeader = (token: string) => ({
 });
 
 export function requestAuthorize(payload: WithToken) {
-  return rxHttp.get<User>(apiUrl('/auth'), {
+  return rxHttp.get<User>(apiUrl('/users/me'), {
     headers: authorizationHeader(payload.token),
   });
 }
