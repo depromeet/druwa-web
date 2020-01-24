@@ -104,6 +104,9 @@ export const Wrapper = styled.button`
     }
 
     // Button color
+    &.Button--color-normal {
+      background-color: ${selectBackgroundColor('float')};
+    }
     &.Button--color-primary {
       background-color: ${selectPrimaryColor};
     }

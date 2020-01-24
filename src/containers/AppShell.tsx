@@ -8,6 +8,7 @@ import { useBooleanState } from '../hooks';
 import { withRootStore } from '../stores';
 import { authorizeWithTokenWhichFromStorageAction } from '../stores/actions';
 import { defaultDarkTheme } from '../styles';
+import DramaEpisodePage from './DramEpisodePage';
 import OAuthCheckPage from './OAuthCheckPage';
 
 function AppShell() {
@@ -28,7 +29,9 @@ function AppShell() {
       <Router>
         <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
         <Switch>
-          <Route path="/" />
+          <Route path="/">
+            <DramaEpisodePage />
+          </Route>
           <Route path="/oauth/check">
             <OAuthCheckPage />
           </Route>

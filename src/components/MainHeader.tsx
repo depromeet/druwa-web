@@ -22,12 +22,12 @@ function MainHeader({ login, className, onLoginButtonClick }: Props) {
         <Toolbar>
           <ul>
             <li>
-              <Button type="icon" size={36} aria-label="알림">
+              <Button type="icon" size={36} aria-label="알림" color="transparent">
                 <Icon name="alarm" aria-hidden={true} />
               </Button>
             </li>
             <li>
-              <Button type="icon" size={36} aria-label="통합검색">
+              <Button type="icon" size={36} aria-label="통합검색" color="transparent">
                 <Icon name="search" aria-hidden={true} />
               </Button>
             </li>

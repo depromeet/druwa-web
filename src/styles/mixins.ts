@@ -24,3 +24,12 @@ export const cssVisuallyHidden = css`
   border: 0;
   clip: rect(0, 0, 0, 0);
 `;
+
+export const cssHideScrollbar = css`
+  &::-webkit-scrollbar {
+    display: none;
+    -webkit-appearance: none;
+    width: 0 !important;
+    height: 0 !important;
+  }
+`;
