@@ -19,6 +19,7 @@ export interface Theme {
     readonly float: string;
     readonly textarea: string;
     readonly border: string;
+    readonly disabled: string;
   };
 }
 
@@ -57,6 +58,7 @@ export const defaultLightTheme: Theme = {
     float: '',
     textarea: '',
     border: '',
+    disabled: '',
   },
 };
 
@@ -78,5 +80,6 @@ export const defaultDarkTheme: Theme = {
     float: colorPlatte.grey200,
     textarea: colorPlatte.grey300,
     border: colorPlatte.grey300,
+    disabled: colorPlatte.grey300,
   },
 };

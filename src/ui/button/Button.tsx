@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import React, { HTMLProps, ReactNode } from 'react';
-import { Content, Wrapper } from './styles';
+import { Wrapper, Content } from './styles';
 import { ButtonColor, ButtonSize, ButtonType } from './types';
 
 interface Props extends Omit<HTMLProps<HTMLButtonElement>, 'size' | 'type'> {
   /** @default 'normal' */
   color?: ButtonColor;
-  /** @default 28' */
+  /** @default 28 */
   size?: ButtonSize;
   /** @default 'flat' */
   type?: ButtonType;
