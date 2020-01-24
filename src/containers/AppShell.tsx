@@ -1,44 +1,45 @@
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { kakaoOAuthPopupName } from '../constants';
+import { LoginOrSignupDialog } from '../components/LoginOrSignupDialog';
+import MainHeader from '../components/MainHeader';
 import { UIProvider } from '../core';
-import { useWindowPopup } from '../hooks';
-import { oauthApiUrls } from '../remotes';
+import { useBooleanState } from '../hooks';
+import { withRootStore } from '../stores';
+import { authorizeWithTokenWhichFromStorageAction } from '../stores/actions';
 import { defaultDarkTheme } from '../styles';
-import { Button } from '../ui/button';
-import { FormFields, TextField } from '../ui/form';
 import OAuthCheckPage from './OAuthCheckPage';
 
-export default function AppShell() {
-  const kakaoOAuthPopup = useWindowPopup(oauthApiUrls.kakao, kakaoOAuthPopupName, {
-    onClose(token) {
-      console.log(token);
-      alert(token); // TODO: 토큰값 받아서 처리 필요
-    },
-    features: {
-      width: 480,
-      height: 699,
-    },
-  });
+function AppShell() {
+  const dispatch = useDispatch();
 
-  const openKakaoOAuthPopup = useCallback(() => {
-    kakaoOAuthPopup.open({ behaviorIfAlreadyOpened: 'focus' });
-  }, [kakaoOAuthPopup]);
+  const [
+    shouldOpenLoginOrSignupDialog,
+    openLoginOrSignupDialog,
+    closeLoginOrSignupDialog,
+  ] = useBooleanState();
+
+  useEffect(() => {
+    dispatch(authorizeWithTokenWhichFromStorageAction());
+  }, [dispatch]);
 
   return (
     <UIProvider theme={defaultDarkTheme}>
-      <Button onClick={openKakaoOAuthPopup}>카카오톡 로그인</Button>
-      <FormFields>
-        <TextField type="email" placeholder="이메일" error="이메일을 다시 확인해주세요." />
-        <TextField type="password" placeholder="비밀번호" />
-      </FormFields>
       <Router>
+        <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
         <Switch>
+          <Route path="/" />
           <Route path="/oauth/check">
             <OAuthCheckPage />
           </Route>
         </Switch>
       </Router>
+      <LoginOrSignupDialog
+        open={shouldOpenLoginOrSignupDialog}
+        onClose={closeLoginOrSignupDialog}
+      />
     </UIProvider>
   );
 }
+
+export default withRootStore(AppShell);
