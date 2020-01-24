@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { cssButtonReset, fontWeights, styled } from '../../styles';
 import { Dialog } from '../../ui/dialog';
-import { AriaTab } from '../AriaTab';
+import { AriaTab } from '../../ui/aria-tab';
 import Spacing from '../Spacing';
 import LoginForm from './LoginForm';
 import OAuthLogins from './OAuthLogins';
