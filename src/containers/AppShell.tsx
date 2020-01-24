@@ -27,9 +27,9 @@ function AppShell() {
   return (
     <UIProvider theme={defaultDarkTheme}>
       <Router>
-        <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
         <Switch>
-          <Route path="/">
+          <Route path="/" exact={true}>
+            <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
             <DramaEpisodePage />
           </Route>
           <Route path="/oauth/check">
