@@ -8,7 +8,7 @@ import { useBooleanState } from '../hooks';
 import { withRootStore } from '../stores';
 import { authorizeWithTokenWhichFromStorageAction } from '../stores/actions';
 import { defaultDarkTheme } from '../styles';
-import DramaEpisodePage from './DramEpisodePage';
+import DramaEpisodePage from './DramaEpisodePage';
 import OAuthCheckPage from './OAuthCheckPage';
 
 function AppShell() {
