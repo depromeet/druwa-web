@@ -1,9 +1,11 @@
+import { css } from '@emotion/core';
 import React, { ReactNode } from 'react';
+import { useElementRef } from '../../hooks';
 import { Button } from '../button';
 import { HeadingType, HiddenHeading } from '../hidden-heading';
 import { Icon } from '../icon';
 import { SliderContext } from './contexts';
-import { useSliderDom, useSliderNavControl, useSliderScrolling } from './hooks';
+import { useSliderNavControl, useSliderScrolling } from './hooks';
 import SliderItem from './SliderItem';
 import { List, NavWrapper, Wrapper } from './styles';
 
@@ -32,7 +34,7 @@ export default function Slider({
   leftNavTitle = '좌로 스크롤하기',
   rightNavTitle = '우로 스크롤하기',
 }: Props) {
-  const [elem, onElemRef] = useSliderDom();
+  const [elem, onElemRef] = useElementRef<HTMLUListElement>();
   const [showLeftNav, leftNavStyle, showRightNav, rightNavStyle] = useSliderNavControl(elem);
 
   const scrollToLeft = useSliderScrolling(elem, {
@@ -57,7 +59,14 @@ export default function Slider({
         </List>
         <NavWrapper align="left" style={leftNavStyle} aria-hidden={!showLeftNav}>
           <Button type="icon" size={48} aria-label={leftNavTitle} onClick={scrollToLeft}>
-            <Icon name="arrow-next" size={24} aria-hidden={true} />
+            <Icon
+              name="arrow-next"
+              size={24}
+              aria-hidden={true}
+              css={css`
+                transform: rotate(180deg);
+              `}
+            />
           </Button>
         </NavWrapper>
         <NavWrapper align="right" style={rightNavStyle} aria-hidden={!showRightNav}>

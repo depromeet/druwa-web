@@ -6,7 +6,7 @@ export const Wrapper = styled.section`
   width: 100%;
 `;
 
-export const ListItem = styled.li<{ size?: number; spacing?: number }>`
+export const ListItem = styled(animated.li)<{ size?: number; spacing?: number }>`
   display: inline-block;
   width: ${p => p.size}px;
   margin: 0 ${p => p.spacing}px;

@@ -3,3 +3,7 @@ export function supportsElementScroll() {
 
   return typeof root?.scroll === 'function';
 }
+
+export function supportsIntersectionObserver() {
+  return typeof IntersectionObserver === 'function';
+}

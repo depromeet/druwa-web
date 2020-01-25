@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSpring } from 'react-spring';
 import { EMPTY, fromEvent, merge } from 'rxjs';
 import { useEventCallback, useObservable } from 'rxjs-hooks';
@@ -13,17 +13,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { duration, eases, supportsElementScroll } from '../../core';
-
-export function useSliderDom() {
-  const [elem, setElem] = useState<HTMLElement | null>(null);
-  const onRef = useCallback((elem: HTMLElement | null) => {
-    setElem(elem);
-  }, []);
-
-  return [elem, onRef] as const;
-}
-
-const isElement = (elem: HTMLElement | null): elem is HTMLElement => elem !== null;
+import { isElement } from '../../hooks';
 
 interface SliderScrollState {
   scrollLeft: number;
