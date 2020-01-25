@@ -34,7 +34,7 @@ export default function Slider({
   leftNavTitle = '좌로 스크롤하기',
   rightNavTitle = '우로 스크롤하기',
 }: Props) {
-  const [elem, onElemRef] = useElementRef<HTMLUListElement>();
+  const [elem, onElemRef] = useElementRef();
   const [showLeftNav, leftNavStyle, showRightNav, rightNavStyle] = useSliderNavControl(elem);
 
   const scrollToLeft = useSliderScrolling(elem, {
