@@ -33,3 +33,9 @@ export const cssHideScrollbar = css`
     height: 0 !important;
   }
 `;
+
+export const cssTextEllipsis = css`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;

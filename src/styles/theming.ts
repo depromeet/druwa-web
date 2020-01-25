@@ -8,6 +8,7 @@ export interface Theme {
   readonly foreground: {
     readonly textPrimary: string;
     readonly textSecondary: string;
+    readonly textDisabled: string;
     readonly icon: string;
     readonly iconContrast: string;
     readonly buttonPrimaryText: string;
@@ -47,6 +48,7 @@ export const defaultLightTheme: Theme = {
   foreground: {
     textPrimary: colorPlatte.black,
     textSecondary: '',
+    textDisabled: '',
     icon: colorPlatte.black,
     iconContrast: colorPlatte.white,
     buttonPrimaryText: colorPlatte.white,
@@ -69,6 +71,7 @@ export const defaultDarkTheme: Theme = {
   foreground: {
     textPrimary: colorPlatte.white,
     textSecondary: colorPlatte.grey100,
+    textDisabled: colorPlatte.grey200,
     icon: colorPlatte.black,
     iconContrast: colorPlatte.white,
     buttonPrimaryText: colorPlatte.white,

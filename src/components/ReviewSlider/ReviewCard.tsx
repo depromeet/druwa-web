@@ -1,5 +1,16 @@
-import React, { memo } from 'react';
-import { selectBackgroundColor, styled } from '../../styles';
+/* eslint-disable import/no-duplicates */
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import koLocale from 'date-fns/locale/ko';
+import React, { memo, useMemo } from 'react';
+import {
+  cssTextEllipsis,
+  fontSizes,
+  fontWeights,
+  lineHeights,
+  selectBackgroundColor,
+  selectForegroundColor,
+  styled,
+} from '../../styles';
 import { ProfileImage } from '../../ui/profile-image';
 
 interface Props {
@@ -12,7 +23,20 @@ interface Props {
   className?: string;
 }
 
-function ReviewCard({ reviewerImageUrl, reviewerName, className }: Props) {
+function ReviewCard({
+  title,
+  body,
+  reviewerImageUrl,
+  rating,
+  reviewerName,
+  createdAt,
+  className,
+}: Props) {
+  const distanceToNow = useMemo(
+    () => formatDistanceToNow(new Date(createdAt), { addSuffix: false, locale: koLocale }),
+    [createdAt],
+  );
+
   return (
     <Wrapper className={className}>
       <ReviewerProfileImage
@@ -21,7 +45,19 @@ function ReviewCard({ reviewerImageUrl, reviewerName, className }: Props) {
         alt={`${reviewerName} 프로필 이미지`}
         border="primary"
       />
-      <Card>123</Card>
+      <Card>
+        <Title>{title}</Title>
+        <Body>{body}</Body>
+        <Bottom>
+          <BottomLeft>
+            <Metadata highlight={true} marginRight={8}>
+              {rating}
+            </Metadata>
+            <Metadata highlight={true}>{reviewerName}</Metadata>
+          </BottomLeft>
+          <Metadata>{distanceToNow}</Metadata>
+        </Bottom>
+      </Card>
     </Wrapper>
   );
 }
@@ -42,8 +78,59 @@ const ReviewerProfileImage = styled(ProfileImage)`
 `;
 
 const Card = styled.div`
+  display: block;
+  padding: 24px 24px 24px 30px;
   border-radius: 8px;
   background-color: ${selectBackgroundColor('card')};
   width: 100%;
   height: 100%;
+  white-space: normal;
+`;
+
+const Title = styled.p`
+  margin: 0;
+  padding: 0;
+  font-size: ${fontSizes.regular}px;
+  font-weight: ${fontWeights.regular};
+  line-height: ${lineHeights.normal};
+  color: ${selectForegroundColor('textPrimary')};
+
+  display: flex;
+  text-overflow: ellipsis;
+  height: ${fontSizes.regular * lineHeights.normal * 2}px;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  word-break: break-word;
+`;
+
+const Body = styled.p`
+  ${cssTextEllipsis};
+  margin: 4px 0 0 0;
+  padding: 0;
+  font-size: ${fontSizes.regular}px;
+  font-weight: ${fontWeights.regular};
+  line-height: ${lineHeights.normal};
+  color: ${selectForegroundColor('textSecondary')};
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+`;
+
+const BottomLeft = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
+
+const Metadata = styled.span<{ highlight?: boolean; marginRight?: number }>`
+  display: inline-block;
+
+  font-size: ${fontSizes.small}px;
+  font-weight: ${fontWeights.regular};
+  color: ${p => (p.highlight ? p.theme.foreground.textPrimary : p.theme.foreground.textDisabled)};
+  line-height: 1.33;
+  ${p => (p.marginRight !== undefined ? `margin-right: ${p.marginRight}px` : '')};
 `;

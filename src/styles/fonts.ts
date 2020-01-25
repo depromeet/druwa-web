@@ -14,7 +14,7 @@ export type FontWeight = 'regular' | 'medium' | 'bold' | 'black';
 export type LinHeight = 'normal' | 'condensed';
 
 export const fontSizes: Readonly<Record<FontSize, number>> = {
-  small: 11,
+  small: 12,
   regular: 14,
   medium: 16,
   big: 20,
