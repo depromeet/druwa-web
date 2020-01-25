@@ -17,7 +17,7 @@ export const fontSizes: Readonly<Record<FontSize, number>> = {
   small: 12,
   regular: 14,
   medium: 16,
-  big: 20,
+  big: 24,
 };
 
 export const fontWeights: Readonly<Record<FontWeight, number>> = {
