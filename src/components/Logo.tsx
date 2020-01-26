@@ -1,17 +1,19 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { selectForegroundColor, styled } from '../styles';
+import { fontWeights, selectForegroundColor, styled } from '../styles';
 
 interface Props {
+  /** @default 36 */
+  size?: number;
   /** @default '/' */
   routePath?: string;
   className?: string;
 }
 
-function Logo({ routePath = '/', className }: Props) {
+function Logo({ size = 36, routePath = '/', className }: Props) {
   return (
     <Wrapper to={routePath} className={className}>
-      <Text>D.Studio</Text>
+      <Text size={size}>D.Studio</Text>
     </Wrapper>
   );
 }
@@ -24,11 +26,11 @@ const Wrapper = styled(Link)`
   text-decoration: none;
 `;
 
-const Text = styled.h1`
+const Text = styled.h1<{ size: number }>`
   margin: 0;
-  height: 36px;
-  font-size: 36px;
-  font-weight: 900;
-  line-height: 36px;
+  height: ${p => p.size}px;
+  font-size: ${p => p.size}px;
+  font-weight: ${fontWeights.black};
+  line-height: ${p => p.size}px;
   color: ${selectForegroundColor('textPrimary')};
 `;
