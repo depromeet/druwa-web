@@ -10,7 +10,7 @@ export const cssSansSerif = css`
 `;
 
 export type FontSize = 'small' | 'regular' | 'medium' | 'big';
-export type FontWeight = 'regular' | 'medium' | 'bold' | 'black';
+export type FontWeight = 'light' | 'regular' | 'medium' | 'bold' | 'black';
 export type LinHeight = 'normal' | 'condensed';
 
 export const fontSizes: Readonly<Record<FontSize, number>> = {
@@ -21,6 +21,7 @@ export const fontSizes: Readonly<Record<FontSize, number>> = {
 };
 
 export const fontWeights: Readonly<Record<FontWeight, number>> = {
+  light: 300,
   regular: 400,
   medium: 500,
   bold: 700,
