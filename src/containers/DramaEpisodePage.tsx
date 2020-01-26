@@ -26,7 +26,12 @@ export default function DramaEpisodePage() {
         `}
       >
         <ContentWithAside.Content>
-          <DramaEpisodeSummaryCard />
+          <DramaEpisodeSummaryCard
+            likeCount={1205}
+            dislikeCount={23}
+            productionCompanyName="Samsung Electronics"
+            episodeSummary="바다에 가기 위해 버스에 오른 소녀 한슬(김소혜 분). 그곳에서 한슬은 희망없이 반복되는 일상을 이기지 못하고 탈출한 기영(양동근)을 만나게 된다. 마침내 도착한 바닷가. 무엇이 그들을 바다로 이끌었을까?"
+          />
         </ContentWithAside.Content>
         <ContentWithAside.Aside>Aside</ContentWithAside.Aside>
       </ContentWithAside>
