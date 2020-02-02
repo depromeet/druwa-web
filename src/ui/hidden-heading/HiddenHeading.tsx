@@ -19,7 +19,8 @@ interface Props extends Omit<HTMLProps<HTMLElement>, 'className' | 'children'> {
  * @see https://www.accessibility-developer-guide.com/examples/headings/html-5-outline/
  */
 export function HiddenHeading({ as = 'h1', className, children, ...props }: Props) {
-  const Heading = useMemo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const Heading = useMemo<any>(
     () =>
       styled[as]`
         ${cssVisuallyHidden};

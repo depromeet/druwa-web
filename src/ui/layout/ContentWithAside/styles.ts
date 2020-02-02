@@ -14,7 +14,7 @@ export const Wrapper = styled.div<{ spacing: number }>`
 
 export const Container = styled.div<{ spacing: number; asideSize: number }>`
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   margin: 0 -${p => p.spacing / 2}px;
   width: 100%;
 

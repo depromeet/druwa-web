@@ -1,19 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSpring } from 'react-spring';
-import { EMPTY, fromEvent, merge } from 'rxjs';
-import { useEventCallback, useObservable } from 'rxjs-hooks';
-import {
-  auditTime,
-  filter,
-  ignoreElements,
-  map,
-  mapTo,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
-import { duration, eases, supportsElementScroll } from '../../core';
+import { BehaviorSubject, EMPTY, fromEvent, merge, Subject } from 'rxjs';
+import { useObservable } from 'rxjs-hooks';
+import { auditTime, filter, ignoreElements, map, switchMap, tap } from 'rxjs/operators';
+import { supportsElementScroll } from '../../core';
+import { scrollAnimation } from '../../core/animations';
 import { isElement } from '../../hooks';
+import { Nullable } from '../../utils';
+import { SliderContextValue } from './contexts';
 
 interface SliderScrollState {
   scrollLeft: number;
@@ -85,67 +79,93 @@ export function useSliderNavControl(elem: HTMLElement | null) {
   return [showLeftNav, leftNavStyle, showRightNav, rightNavStyle] as const;
 }
 
-const horizontalScrollAnimation = (
-  elem: HTMLElement,
-  distance: number,
-  direction: 1 | -1,
-  speed: number,
-) => {
-  const startOffset = elem.scrollLeft;
+type SliderScrollAnimationDirection = 'left' | 'right';
 
-  const min = 0;
-  const max = elem.scrollWidth - elem.getBoundingClientRect().width + 1; // 1은 오차...
+function getNextScrollDistance(
+  direction: SliderScrollAnimationDirection,
+  options: {
+    state: SliderScrollState;
+    context: SliderContextValue;
+  },
+) {
+  const { state, context } = options;
+  const { scrollLeft, width } = state;
+  const { itemSize, spacing, threshold } = context;
 
-  const distanceOffset = Math.min(Math.max(startOffset + distance * direction, min), max);
-  const dir = distanceOffset > startOffset ? 1 : -1;
-  const diff = Math.abs(distanceOffset - startOffset);
+  let nextIndex: number = 0;
+  if (direction === 'left') {
+    const n = Math.floor((scrollLeft - threshold) / (itemSize + spacing)) + 1;
+    const count = Math.floor((width - threshold) / (itemSize + spacing));
 
-  return duration(speed).pipe(
-    map(eases.quarticInOut),
-    map(timing => timing * diff),
-    tap(frame => {
-      elem?.scrollTo(startOffset + frame * dir, 0);
-    }),
-  );
-};
+    nextIndex = n - count;
+  } else if (direction === 'right') {
+    nextIndex = Math.floor((scrollLeft + width - threshold) / (itemSize + spacing)) + 1;
+  }
 
-interface SliderScrollingHookOptions {
-  /** @default 1 */
-  direction?: 1 | -1;
-  speed?: number;
+  return (itemSize + spacing) * (nextIndex - 1) - threshold;
 }
 
-export function useSliderScrolling(
-  elem: HTMLElement | null,
-  options: SliderScrollingHookOptions = {},
+export function useSliderScrollAnimation(
+  elem: Nullable<HTMLElement>,
+  context: SliderContextValue | undefined,
 ) {
-  const { direction = 1, speed = 500 } = options;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [animate] = useEventCallback<any, null, [HTMLElement | null, number, 1 | -1]>(
-    (event$, inputs$) =>
-      event$.pipe(
-        withLatestFrom(inputs$),
-        map(([, inputs]) => inputs),
-        switchMap(inputs => {
-          const [elem, speed, direction] = inputs;
-
-          if (isElement(elem)) {
-            return horizontalScrollAnimation(
-              elem,
-              elem.getBoundingClientRect().width,
-              direction,
-              speed,
-            );
-          }
-
-          return EMPTY;
-        }),
-        mapTo(null),
-      ),
-    null,
-    [elem, speed, direction],
+  const animate$ = useMemo(() => new Subject<SliderScrollAnimationDirection>(), []);
+  const elem$ = useMemo(
+    () => new BehaviorSubject<Nullable<HTMLElement> | undefined>(undefined),
+    [],
+  );
+  const context$ = useMemo(
+    () => new BehaviorSubject<SliderContextValue | undefined>(undefined),
+    [],
   );
 
-  return animate;
+  useEffect(() => {
+    elem$.next(elem);
+  }, [elem$, elem]);
+
+  useEffect(() => {
+    context$.next(context);
+  }, [context$, context]);
+
+  useEffect(() => {
+    const subscription = animate$
+      .pipe(
+        switchMap(direction => {
+          const elem = elem$.getValue();
+          const context = context$.getValue();
+
+          if (!isElement(elem) || context === undefined) {
+            return EMPTY;
+          }
+
+          const scrollState = getSliderScrollState(elem);
+          const distanceOffset = getNextScrollDistance(direction, {
+            state: scrollState,
+            context,
+          });
+
+          return scrollAnimation(elem, {
+            direction: 'horizontal',
+            distanceOffset,
+            speed: 500,
+            min: 0,
+            max: elem.scrollWidth - elem.getBoundingClientRect().width + 1, // 1은 오차...
+          });
+        }),
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+      elem$.complete();
+      context$.complete();
+    };
+  }, [animate$, elem$, context$]);
+
+  return useCallback(
+    (direction: SliderScrollAnimationDirection) => {
+      animate$.next(direction);
+    },
+    [animate$],
+  );
 }

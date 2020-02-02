@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { ReactNode, useContext } from 'react';
 import { useSpring } from 'react-spring';
 import { useElementRef, useImpression } from '../../hooks';
@@ -30,7 +31,7 @@ export default function SliderItem({ children, className }: Props) {
       size={value?.itemSize}
       spacing={value?.spacing !== undefined ? value.spacing / 2 : 0}
       style={itemStyle}
-      className={className}
+      className={classNames('SliderItem', className)}
     >
       {children}
     </ListItem>

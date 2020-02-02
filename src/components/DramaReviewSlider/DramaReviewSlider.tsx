@@ -10,7 +10,7 @@ export default function DramaReviewSlider() {
       <Slider itemSize={283} spacing={16}>
         <Slider.Item>
           <ReviewCard
-            title="서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
+            title="1. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
             reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
@@ -20,7 +20,7 @@ export default function DramaReviewSlider() {
         </Slider.Item>
         <Slider.Item>
           <ReviewCard
-            title="서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
+            title="2. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
             reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
@@ -30,7 +30,7 @@ export default function DramaReviewSlider() {
         </Slider.Item>
         <Slider.Item>
           <ReviewCard
-            title="서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
+            title="3. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
             reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
@@ -40,7 +40,7 @@ export default function DramaReviewSlider() {
         </Slider.Item>
         <Slider.Item>
           <ReviewCard
-            title="서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
+            title="4. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
             reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
@@ -50,7 +50,7 @@ export default function DramaReviewSlider() {
         </Slider.Item>
         <Slider.Item>
           <ReviewCard
-            title="서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
+            title="5. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
             reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
@@ -60,7 +60,7 @@ export default function DramaReviewSlider() {
         </Slider.Item>
         <Slider.Item>
           <ReviewCard
-            title="서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
+            title="6. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
             reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"

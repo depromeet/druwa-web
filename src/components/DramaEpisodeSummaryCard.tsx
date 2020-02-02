@@ -40,7 +40,7 @@ function DramaEpisodeSummaryCard({
             size={36}
             onClick={onShare}
           >
-            <Icon name="share" size={24} aria-hideen={true} />
+            <Icon name="share" size={24} aria-hidden={true} />
           </Button>
         </Card.HeadRight>
       </Card.Head>
