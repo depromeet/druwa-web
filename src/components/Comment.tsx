@@ -5,6 +5,8 @@ import React, { memo, useMemo } from 'react';
 import { LikeType } from '../models';
 import { fontSizes, fontWeights, lineHeights, selectForegroundColor, styled } from '../styles';
 import { ProfileImage } from '../ui/profile-image';
+import { formatKiloCount } from '../utils';
+import LikeButton from './LikeButton';
 
 interface Props {
   body: string;
@@ -32,6 +34,17 @@ function Comment({ body, writerName, writerImageUrl, createdAt, className }: Pro
           <DistanceToNow>{distanceToNow}</DistanceToNow>
         </Title>
         <Body>{body}</Body>
+        <Tools>
+          <div>
+            <LikeButtonWithCount>
+              <LikeButton type="like" activated={true} />
+              <Count>{formatKiloCount(3)}</Count>
+            </LikeButtonWithCount>
+            <LikeButtonWithCount>
+              <LikeButton type="dislike" activated={false} />
+            </LikeButtonWithCount>
+          </div>
+        </Tools>
       </Content>
     </Wrapper>
   );
@@ -74,6 +87,27 @@ const Body = styled.p`
   font-weight: ${fontWeights.regular};
   line-height: ${lineHeights.normal};
   color: ${selectForegroundColor('textSecondary')};
+`;
+
+const Tools = styled.div`
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const LikeButtonWithCount = styled.div`
+  display: inline-flex;
+  align-items: center;
+  margin-right: 12px;
+`;
+
+const Count = styled.span`
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 15px;
+  font-weight: ${fontWeights.medium};
+  color: ${selectForegroundColor('textPrimary')};
 `;
 
 export default memo(Comment);

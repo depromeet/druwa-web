@@ -9,7 +9,7 @@ export const IconBox = styled.i<{ width: number; height: number }>`
 
   & > svg {
     display: inline-block;
-    width: ${p => p.width}px;
-    height: ${p => p.height}px;
+    width: ${p => p.width}px !important;
+    height: ${p => p.height}px !important;
   }
 `;
