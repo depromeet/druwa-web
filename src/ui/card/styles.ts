@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 export const Head = styled.div<{ size: string | number }>`
   display: flex;
   width: 100%;
-  height: ${p => coerceCssPixelValue(p.size)}px;
+  height: ${p => coerceCssPixelValue(p.size)};
   justify-content: space-between;
   background-color: ${selectBackgroundColor('card')};
   border-bottom: 1px solid ${selectBackgroundColor('border')};
