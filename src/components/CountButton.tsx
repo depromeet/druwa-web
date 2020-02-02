@@ -1,10 +1,11 @@
 import React, { memo, useMemo } from 'react';
+import { LikeType } from '../models';
 import { cssButtonReset, fontSizes, fontWeights, selectForegroundColor, styled } from '../styles';
 import { Icon } from '../ui/icon';
 import { formatKiloCount } from '../utils';
 
 interface Props {
-  type: 'like' | 'dislike';
+  type: LikeType;
   count: number;
   activated: boolean;
   className?: string;
