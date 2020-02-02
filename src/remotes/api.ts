@@ -13,7 +13,7 @@ export const oauthApiUrls = {
 } as const;
 
 const authorizationHeader = (token: string) => ({
-  Authorization: `JWT ${token}`,
+  Authorization: `Bearer ${token}`,
 });
 
 export function requestAuthorize(payload: WithToken) {

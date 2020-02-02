@@ -10,6 +10,7 @@ import { withRootStore } from '../stores';
 import { authorizeWithTokenWhichFromStorageAction } from '../stores/actions';
 import { defaultDarkTheme } from '../styles';
 import DramaEpisodePage from './DramaEpisodePage';
+import MainPage from './MainPage';
 import OAuthCheckPage from './OAuthCheckPage';
 
 function AppShell() {
@@ -30,6 +31,11 @@ function AppShell() {
       <Router>
         <Switch>
           <Route path="/" exact={true}>
+            <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
+            <MainPage />
+            <MainFooter />
+          </Route>
+          <Route path="/drama/:dramaId/episode/:episodeId" exact={true}>
             <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
             <DramaEpisodePage />
             <MainFooter />
