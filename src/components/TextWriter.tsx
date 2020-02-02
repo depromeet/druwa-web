@@ -21,7 +21,7 @@ interface Props {
   onSubmit?(text: string): void;
 }
 
-function CommentWriter({ maxLength, disabled, placeholder, className, onLogin, onSubmit }: Props) {
+function TextWriter({ maxLength, disabled, placeholder, className, onLogin, onSubmit }: Props) {
   const [value, setValue] = useInputValue<HTMLTextAreaElement>('');
 
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -61,7 +61,7 @@ function CommentWriter({ maxLength, disabled, placeholder, className, onLogin, o
   );
 }
 
-export default memo(CommentWriter);
+export default memo(TextWriter);
 
 const Wrapper = styled.div`
   width: 100%;
