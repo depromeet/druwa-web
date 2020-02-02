@@ -9,12 +9,10 @@ export const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-const HEAD_SIZE = 44;
-
-export const Head = styled.div`
+export const Head = styled.div<{ size: string | number }>`
   display: flex;
   width: 100%;
-  height: ${HEAD_SIZE}px;
+  height: ${p => coerceCssPixelValue(p.size)}px;
   justify-content: space-between;
   background-color: ${selectBackgroundColor('card')};
   border-bottom: 1px solid ${selectBackgroundColor('border')};

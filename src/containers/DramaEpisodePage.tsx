@@ -5,8 +5,9 @@ import { DramaEpisodePlaylist, DramaEpisodePlaylistItem } from '../components/Dr
 import DramaEpisodeSummaryCard from '../components/DramaEpisodeSummaryCard';
 import DramaEpisodeTitle from '../components/DramaEpisodeTitle';
 import Spacing from '../components/Spacing';
-import { ContentWithAside } from '../ui/layout/ContentWithAside';
 import { Card } from '../ui/card';
+import { ContentWithAside } from '../ui/layout/ContentWithAside';
+import DramaEpisodeCommentSection from './DramaEpisodeCommentSection';
 
 export default function DramaEpisodePage() {
   return (
@@ -105,6 +106,17 @@ export default function DramaEpisodePage() {
             </DramaEpisodePlaylist>
           </Card>
         </ContentWithAside.Aside>
+      </ContentWithAside>
+      <ContentWithAside asideSize={322} spacing={8}>
+        <ContentWithAside.Content>
+          <Card>
+            <Card.Head size={60} />
+            <Card.Content>
+              <DramaEpisodeCommentSection />
+            </Card.Content>
+          </Card>
+        </ContentWithAside.Content>
+        <ContentWithAside.Aside>Aside</ContentWithAside.Aside>
       </ContentWithAside>
       <Spacing size={200} />
     </>
