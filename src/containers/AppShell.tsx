@@ -1,54 +1,53 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { LoginOrSignupDialog } from '../components/LoginOrSignupDialog';
 import MainFooter from '../components/MainFooter';
-import MainHeader from '../components/MainHeader';
 import { UIProvider } from '../core';
-import { useBooleanState } from '../hooks';
 import { withRootStore } from '../stores';
 import { authorizeWithTokenWhichFromStorageAction } from '../stores/actions';
+import { selectIsAuthInitialized } from '../stores/selectors';
 import { defaultDarkTheme } from '../styles';
 import DramaEpisodePage from './DramaEpisodePage';
+import LandingPage from './LandingPage';
+import LoginDialogProvider from './LoginDialogProvider';
+import MainHeader from './MainHeader';
 import MainPage from './MainPage';
 import OAuthCheckPage from './OAuthCheckPage';
 
 function AppShell() {
   const dispatch = useDispatch();
-
-  const [
-    shouldOpenLoginOrSignupDialog,
-    openLoginOrSignupDialog,
-    closeLoginOrSignupDialog,
-  ] = useBooleanState();
+  const isAuthInitialized = useSelector(selectIsAuthInitialized);
 
   useEffect(() => {
-    dispatch(authorizeWithTokenWhichFromStorageAction());
-  }, [dispatch]);
+    if (!isAuthInitialized) {
+      dispatch(authorizeWithTokenWhichFromStorageAction());
+    }
+  }, [isAuthInitialized, dispatch]);
 
   return (
     <UIProvider theme={defaultDarkTheme}>
-      <Router>
-        <Switch>
-          <Route path="/" exact={true}>
-            <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
-            <MainPage />
-            <MainFooter />
-          </Route>
-          <Route path="/drama/:dramaId/episode/:episodeId" exact={true}>
-            <MainHeader onLoginButtonClick={openLoginOrSignupDialog} />
-            <DramaEpisodePage />
-            <MainFooter />
-          </Route>
-          <Route path="/oauth/check" exact={true}>
-            <OAuthCheckPage />
-          </Route>
-        </Switch>
-      </Router>
-      <LoginOrSignupDialog
-        open={shouldOpenLoginOrSignupDialog}
-        onClose={closeLoginOrSignupDialog}
-      />
+      <LoginDialogProvider>
+        <Router>
+          <Switch>
+            <Route path="/" exact={true}>
+              <LandingPage />
+            </Route>
+            <Route path="/home" exact={true}>
+              <MainHeader />
+              <MainPage />
+              <MainFooter />
+            </Route>
+            <Route path="/drama/:dramaId/episode/:episodeId" exact={true}>
+              <MainHeader />
+              <DramaEpisodePage />
+              <MainFooter />
+            </Route>
+            <Route path="/oauth/check" exact={true}>
+              <OAuthCheckPage />
+            </Route>
+          </Switch>
+        </Router>
+      </LoginDialogProvider>
     </UIProvider>
   );
 }

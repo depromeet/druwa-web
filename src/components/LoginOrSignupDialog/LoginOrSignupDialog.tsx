@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { cssButtonReset, fontWeights, styled } from '../../styles';
-import { Dialog } from '../../ui/dialog';
 import { AriaTab } from '../../ui/aria-tab';
+import { Dialog } from '../../ui/dialog';
 import Spacing from '../Spacing';
 import LoginForm from './LoginForm';
 import OAuthLogins from './OAuthLogins';
@@ -12,6 +12,7 @@ interface Props {
   closeOnDimmerClick?: boolean;
   className?: string;
 
+  onLoginWithToken?(token: string): void;
   onClose?(): void;
 }
 
@@ -26,7 +27,13 @@ const tabItems = [
   },
 ];
 
-function LoginOrSignupDialog({ open, closeOnDimmerClick, onClose, className }: Props) {
+function LoginOrSignupDialog({
+  open,
+  closeOnDimmerClick,
+  onLoginWithToken,
+  onClose,
+  className,
+}: Props) {
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
 
   return (
@@ -55,7 +62,7 @@ function LoginOrSignupDialog({ open, closeOnDimmerClick, onClose, className }: P
             <Spacing size={30} />
             <LoginForm />
             <Spacing size={48} />
-            <OAuthLogins />
+            <OAuthLogins onLogin={onLoginWithToken} />
           </TabPanel>
           <TabPanel item={tabItems[1]}>TODO</TabPanel>
         </AriaTab>
