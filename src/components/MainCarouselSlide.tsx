@@ -8,10 +8,18 @@ interface Props {
   productionName: string;
   title: string;
   description: string;
+  backgroundImageUrl: string;
   className?: string;
 }
 
-function MainCarouselSlide({ activated, productionName, title, description, className }: Props) {
+function MainCarouselSlide({
+  activated,
+  productionName,
+  title,
+  description,
+  backgroundImageUrl,
+  className,
+}: Props) {
   const [productNameStyle, titleStyle, descriptionStyle] = useSprings(3, [
     {
       from: {
@@ -44,7 +52,7 @@ function MainCarouselSlide({ activated, productionName, title, description, clas
   ]);
 
   return (
-    <Slide role="banner" className={className}>
+    <Slide role="banner" backgroundImageUrl={backgroundImageUrl} className={className}>
       <SlideInner>
         <ProductionName style={productNameStyle}>{productionName}</ProductionName>
         <Title style={titleStyle}>{title}</Title>
@@ -56,9 +64,13 @@ function MainCarouselSlide({ activated, productionName, title, description, clas
 
 export default memo(MainCarouselSlide);
 
-const Slide = styled.div`
+const Slide = styled.div<{ backgroundImageUrl: string }>`
   height: 700px;
   outline: 0;
+  background-size: cover;
+  background-image: url(${p => p.backgroundImageUrl});
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const SlideInner = styled.div`

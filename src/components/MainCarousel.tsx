@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Carousel from 'react-slick';
+import { colorPlatte, cssButtonReset, styled } from '../styles';
 import MainCarouselSlide from './MainCarouselSlide';
 
 const slides = [
@@ -41,7 +42,8 @@ export default function MainCarousel() {
   return (
     <Carousel
       arrows={false}
-      dots={false}
+      dots={true}
+      appendDots={dots => <Dots>{dots}</Dots>}
       autoplay={true}
       draggable={true}
       infinite={true}
@@ -53,6 +55,7 @@ export default function MainCarousel() {
           key={index}
           activated={index === currentSlideIndex}
           productionName={slide.productionName}
+          backgroundImageUrl="/assets/images/main-carousel-sample.jpeg"
           title={slide.title}
           description={slide.description}
         />
@@ -60,3 +63,40 @@ export default function MainCarousel() {
     </Carousel>
   );
 }
+
+const Dots = styled.ul`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 35px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+
+  > li {
+    margin: 0 5px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    background-color: ${colorPlatte.white};
+
+    > button {
+      ${cssButtonReset};
+      background: transparent;
+      display: block;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      text-indent: -9999em;
+      text-transform: uppercase;
+    }
+
+    &.slick-active {
+      background-color: ${colorPlatte.accent};
+    }
+  }
+`;

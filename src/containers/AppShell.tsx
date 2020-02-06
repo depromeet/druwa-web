@@ -33,9 +33,7 @@ function AppShell() {
               <LandingPage />
             </Route>
             <Route path="/home" exact={true}>
-              <MainHeader />
               <MainPage />
-              <MainFooter />
             </Route>
             <Route path="/drama/:dramaId/episode/:episodeId" exact={true}>
               <MainHeader />
