@@ -1,5 +1,6 @@
 import { css } from '@emotion/core';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { animated, useSprings } from 'react-spring';
 import {
   colorPlatte,
@@ -17,6 +18,11 @@ const cssTop = css`
 `;
 
 export default function LandingPage() {
+  const history = useHistory();
+  const navigateToHome = useCallback(() => {
+    history.push('/home');
+  }, [history]);
+
   const [titleStyle, subtitleStyle, ctaStyle] = useSprings(3, [
     {
       from: {
@@ -64,7 +70,9 @@ export default function LandingPage() {
             <br />
             소규모 제작사들의 다양한 작품을 세상 앞에 선보이는 플랫폼 서비스입니다.
           </Subtitle>
-          <MainCTA style={ctaStyle}>드라마 보러가기</MainCTA>
+          <MainCTA style={ctaStyle} onClick={navigateToHome}>
+            드라마 보러가기
+          </MainCTA>
           <Background />
         </HeroContent>
       </Hero>
