@@ -17,6 +17,7 @@ function OAuthLogins({ onLogin, className }: Props) {
       height: 699,
     },
     onClose(token) {
+      console.log(token);
       if (token !== undefined) {
         onLogin?.(token);
       }
