@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { LoginOrSignupDialog } from '../components/LoginOrSignupDialog';
 import { useBooleanState } from '../hooks';
-import { loginWithTokenAction } from '../stores/actions';
+import { loginWithTokenActions } from '../stores/actions';
 
 export type LoginDialogContextValue = Readonly<{
   opened: boolean;
@@ -24,7 +24,7 @@ export default function LoginDialogProvider({ children }: Props) {
   const [opened, open, close] = useBooleanState();
   const handleLoginWithToken = useCallback(
     (token: string) => {
-      dispatch(loginWithTokenAction({ token }));
+      dispatch(loginWithTokenActions({ token }));
       close();
     },
     [dispatch, close],

@@ -1,4 +1,4 @@
-import { createAction, createCustomAction } from 'typesafe-actions';
+import { createAction, createAsyncAction, createCustomAction } from 'typesafe-actions';
 import { User } from '../../models';
 
 type AuthorizeActionPayload =
@@ -17,4 +17,8 @@ export const authorizeWithTokenWhichFromStorageAction = createCustomAction(
   'auth/AUTHORIZE_WITH_TOKEN_WHICH_FROM_STORAGE',
 );
 
-export const loginWithTokenAction = createAction('auth/LOGIN_WITH_TOKEN')<{ token: string }>();
+export const loginWithTokenActions = createAsyncAction(
+  'auth/LOGIN_WITH_TOKEN',
+  'auth/LOGIN_WITH_TOKEN_COMPLETE',
+  'auth/LOGIN_WITH_TOKEN_FAIL',
+)<{ token: string }, { token: string; user: User }, { error: Error }>();
