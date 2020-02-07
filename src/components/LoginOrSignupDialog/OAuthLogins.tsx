@@ -2,8 +2,7 @@ import React, { memo } from 'react';
 import { kakaoOAuthPopupName } from '../../constants';
 import { useWindowPopup } from '../../hooks';
 import { oauthApiUrls } from '../../remotes';
-import { styled } from '../../styles';
-import { Button } from '../../ui/button';
+import { cssButtonReset, styled } from '../../styles';
 
 interface Props {
   onLogin?(token: string): void;
@@ -26,7 +25,13 @@ function OAuthLogins({ onLogin, className }: Props) {
 
   return (
     <Wrapper className={className}>
-      <Button onClick={() => kakaoOAuthPopup.open()}>카카오톡 로그인</Button>
+      <ImageButton aria-label="카카오톡 로그인" onClick={() => kakaoOAuthPopup.open()}>
+        <img
+          alt=""
+          src="/assets/images/sns-kakao@3x.png"
+          srcSet={`/assets/images/sns-kakao.png 1x, /assets/images/sns-kakao@2x.png 2x, /assets/images/sns-kakao@3x.png 3x`}
+        />
+      </ImageButton>
     </Wrapper>
   );
 }
@@ -41,5 +46,21 @@ const Wrapper = styled.div`
 
   & > .Button + .Button {
     margin: 0 5px;
+  }
+`;
+
+const ImageButton = styled.button`
+  ${cssButtonReset};
+  margin: 0 4px;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  display: inline-flex;
+  cursor: pointer;
+
+  > img {
+    width: 100%;
+    height: 100%;
   }
 `;
