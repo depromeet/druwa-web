@@ -24,7 +24,7 @@ export default function LoginDialogProvider({ children }: Props) {
   const [opened, open, close] = useBooleanState();
   const handleLoginWithToken = useCallback(
     (token: string) => {
-      dispatch(loginWithTokenActions({ token }));
+      dispatch(loginWithTokenActions.request({ token }));
       close();
     },
     [dispatch, close],
