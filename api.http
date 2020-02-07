@@ -1,4 +1,4 @@
-GET https://api.druwa.site/dramas/73
+GET https://api.druwa.site/dramas/1
 Accept: application/json
 
 ###
@@ -13,5 +13,44 @@ Authorization: Bearer DRUWA_TEST_TOKEN
   "summary" : "새학기 시작을 풋풋한 대학 청춘 멜로와 함께",
   "productionCompany" : "플레이리스트"
 }
+
+###
+GET https://api.druwa.site/dramas/1
+Accept: application/json
+
+###
+POST https://api.druwa.site/dramas/1/episodes
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer DRUWA_TEST_TOKEN
+
+{
+  "title" : "좋아하는 사람에게 솔직해야 하는 이유",
+  "summary" : "좋아하는 사람에게 솔직해야 하는 이유\n세상 어느 고민 상담이 저렇게 꿀범벅이죠..?\uD83C\uDF6F\n내 광대 해발고도 백두산보다 높은 순간\uD83E\uDD21",
+  "episodeNumber" : 1,
+  "durationInMillis" : 911000,
+  "playUrl": "https://youtu.be/wKZUB4lNP6k"
+}
+
+###
+
+GET https://api.druwa.site/dramas/1/episodes/74
+Accept: application/json
+
+###
+
+POST https://api.druwa.site/dramas/1/episodes/74/comments
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer DRUWA_TEST_TOKEN
+
+{
+  "depth": 1,
+  "contents": "Hello World!"
+}
+
+###
+
+GET https://api.druwa.site/dramas/1/episodes/74/comments
 
 ###

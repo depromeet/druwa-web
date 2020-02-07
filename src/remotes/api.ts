@@ -1,7 +1,7 @@
 import { deployUrl } from '../environment';
 import { User } from '../models';
 import { rxHttp } from './rx-http';
-import { WithToken } from './types';
+import { WithToken, DramaEpisodeResponse, DramaResponse } from './types';
 
 const API_URL = 'https://api.druwa.site';
 const apiUrl = (path: string) => `${API_URL}${path}`;
@@ -20,4 +20,12 @@ export function requestAuthorize(payload: WithToken) {
   return rxHttp.get<User>(apiUrl('/users/me'), {
     headers: authorizationHeader(payload.token),
   });
+}
+
+export function fetchDrama(dramaId: number) {
+  return rxHttp.get<DramaResponse>(apiUrl(`/dramas/${dramaId}`));
+}
+
+export function fetchDramaEpisode(dramaId: number, episodeId: number) {
+  return rxHttp.get<DramaEpisodeResponse>(apiUrl(`/dramas/${dramaId}/episodes/${episodeId}`));
 }

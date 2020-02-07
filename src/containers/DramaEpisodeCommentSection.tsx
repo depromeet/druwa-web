@@ -1,13 +1,24 @@
 import { subMinutes } from 'date-fns';
-import React from 'react';
+import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import Comment from '../components/Comment';
 import TextWriter from '../components/TextWriter';
+import { selectUser } from '../stores/selectors';
 import { styled } from '../styles';
+import { LoginDialogContext } from './LoginDialogProvider';
 
 export default function DramaEpisodeCommentSection() {
+  const user = useSelector(selectUser);
+  const loginDialog = useContext(LoginDialogContext);
+
   return (
     <Wrapper>
-      <TextWriter maxLength={300} placeholder="댓글을 작성하세요" />
+      <TextWriter
+        maxLength={300}
+        disabled={user === null}
+        placeholder="댓글을 작성하세요"
+        onLogin={() => loginDialog?.open()}
+      />
       <CommentList>
         <CommentItem
           writerName="나석주"

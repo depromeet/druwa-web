@@ -42,7 +42,7 @@ function TextWriter({ maxLength, disabled, placeholder, className, onLogin, onSu
           rows={2}
           maxLength={maxLength}
           disabled={disabled}
-          placeholder={placeholder}
+          placeholder={disabled ? undefined : placeholder}
           onChange={setValue}
         />
         {disabled ? (

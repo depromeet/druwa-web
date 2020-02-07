@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { fontWeights, selectForegroundColor, styled } from '../styles';
-import { HiddenHeading } from '../ui/hidden-heading';
 
 interface Props {
   /** @default 36 */
@@ -14,7 +13,6 @@ interface Props {
 function Logo({ size = 36, routePath = '/', className }: Props) {
   return (
     <Wrapper to={routePath} className={className}>
-      <HiddenHeading>드루와 스튜디오</HiddenHeading>
       <Text size={size}>D.Studio</Text>
     </Wrapper>
   );

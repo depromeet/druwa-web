@@ -1,26 +1,50 @@
 import { css } from '@emotion/core';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import DramaEpisodePlayer from '../components/DramaEpisodePlayer';
 import { DramaEpisodePlaylist, DramaEpisodePlaylistItem } from '../components/DramaEpisodePlaylist';
 import DramaEpisodeSummaryCard from '../components/DramaEpisodeSummaryCard';
 import DramaEpisodeTitle from '../components/DramaEpisodeTitle';
 import Spacing from '../components/Spacing';
+import { fetchDramaWithEpisodeActions } from '../stores/actions';
+import { selectDrama, selectDramaEpisode } from '../stores/selectors';
+import { styled } from '../styles';
 import { Card } from '../ui/card';
 import { ContentWithAside } from '../ui/layout/ContentWithAside';
 import DramaEpisodeCommentSection from './DramaEpisodeCommentSection';
 
 export default function DramaEpisodePage() {
+  const { dramaId, episodeId } = useParams<{ dramaId: string; episodeId: string }>();
+  const dispatch = useDispatch();
+
+  const drama = useSelector(selectDrama);
+  const dramaEpisode = useSelector(selectDramaEpisode);
+
+  useEffect(() => {
+    dispatch(
+      fetchDramaWithEpisodeActions.request({
+        dramaId: +dramaId,
+        episodeId: +episodeId,
+      }),
+    );
+  }, [dramaId, episodeId, dispatch]);
+
+  if (drama === null || dramaEpisode === null) {
+    return <Wrapper />;
+  }
+
   return (
-    <>
+    <Wrapper>
       <DramaEpisodeTitle
-        title="최고의 선물 - 인연과 악연 사이"
-        episodeNumber={2}
-        durationInMillis={12100000}
+        title={dramaEpisode.title}
+        episodeNumber={dramaEpisode.number}
+        durationInMillis={dramaEpisode.durationInMillis}
         css={css`
           padding: 47px 0 30px 0;
         `}
       />
-      <DramaEpisodePlayer videoId="JqY0sFJFVGE" />
+      <DramaEpisodePlayer videoId={dramaEpisode.youtubePlayId} />
       <ContentWithAside
         asideSize={322}
         spacing={8}
@@ -30,10 +54,10 @@ export default function DramaEpisodePage() {
       >
         <ContentWithAside.Content>
           <DramaEpisodeSummaryCard
-            likeCount={1205}
-            dislikeCount={23}
-            productionCompanyName="Samsung Electronics"
-            episodeSummary="바다에 가기 위해 버스에 오른 소녀 한슬(김소혜 분). 그곳에서 한슬은 희망없이 반복되는 일상을 이기지 못하고 탈출한 기영(양동근)을 만나게 된다. 마침내 도착한 바닷가. 무엇이 그들을 바다로 이끌었을까?"
+            likeCount={dramaEpisode.likeCount}
+            dislikeCount={dramaEpisode.dislikeCount}
+            productionCompanyName={drama.productionCompany}
+            episodeSummary={dramaEpisode.summary}
           />
         </ContentWithAside.Content>
         <ContentWithAside.Aside>
@@ -119,6 +143,10 @@ export default function DramaEpisodePage() {
         <ContentWithAside.Aside>Aside</ContentWithAside.Aside>
       </ContentWithAside>
       <Spacing size={200} />
-    </>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.article`
+  min-height: 100vh;
+`;

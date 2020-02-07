@@ -17,6 +17,8 @@ interface Props {
 }
 
 function DramaEpisodeSummaryCard({
+  likeCount,
+  dislikeCount,
   productionCompanyName,
   episodeSummary,
   className,
@@ -27,8 +29,8 @@ function DramaEpisodeSummaryCard({
       <Card.Head>
         <Card.HeadLeft leftPadding={8}>
           <Likes>
-            <CountButton type="like" count={1670} activated={true} />
-            <CountButton type="dislike" count={183} activated={false} />
+            <CountButton type="like" count={likeCount} activated={false} />
+            <CountButton type="dislike" count={dislikeCount} activated={false} />
           </Likes>
         </Card.HeadLeft>
         <Card.HeadRight rightPadding={8}>
