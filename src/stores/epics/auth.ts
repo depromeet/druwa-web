@@ -52,6 +52,7 @@ const loginWithTokenEpic: Epic = (action$, _, { api }) =>
       return api.authorize(token).pipe(
         tap(() => {
           storage.set(authTokenStorageKey, token);
+          alert('로그인이 완료되었습니다.');
         }),
         map(user => loginWithTokenActions.success({ token, user })),
         catchError(error => {
