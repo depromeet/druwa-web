@@ -54,15 +54,6 @@ function DramaEpisodeSummaryCard({
       >
         <ProductCompanyName>{productionCompanyName}</ProductCompanyName>
         <EpisodeSummary>{episodeSummary}</EpisodeSummary>
-        <Button
-          color="primary"
-          size={36}
-          css={css`
-            margin-top: 17px;
-          `}
-        >
-          제작사 드라마 모아보기
-        </Button>
       </Card.Content>
     </Card>
   );
