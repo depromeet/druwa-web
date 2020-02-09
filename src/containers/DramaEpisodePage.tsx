@@ -1,14 +1,15 @@
 import { css } from '@emotion/core';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import DramaEpisodePlayer from '../components/DramaEpisodePlayer';
 import { DramaEpisodePlaylist, DramaEpisodePlaylistItem } from '../components/DramaEpisodePlaylist';
 import DramaEpisodeSummaryCard from '../components/DramaEpisodeSummaryCard';
 import DramaEpisodeTitle from '../components/DramaEpisodeTitle';
+import RelatedDramaSection from '../components/RelatedDramaSection';
 import Spacing from '../components/Spacing';
-import { fetchDramaWithEpisodeActions } from '../stores/actions';
-import { selectDrama, selectDramaEpisode } from '../stores/selectors';
+import { fetchDramaWithEpisodeActions, fetchRelatedDramasActions } from '../stores/actions';
+import { selectDrama, selectDramaEpisode, selectRelatedDramas } from '../stores/selectors';
 import { styled } from '../styles';
 import { Card } from '../ui/card';
 import { ContentWithAside } from '../ui/layout/ContentWithAside';
@@ -16,10 +17,16 @@ import DramaEpisodeCommentSection from './DramaEpisodeCommentSection';
 
 export default function DramaEpisodePage() {
   const { dramaId, episodeId } = useParams<{ dramaId: string; episodeId: string }>();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const drama = useSelector(selectDrama);
   const dramaEpisode = useSelector(selectDramaEpisode);
+  const relatedDramas = useSelector(selectRelatedDramas);
+
+  const handleRelatedDramaClick = useCallback(() => {
+    history.push('/'); // TODO
+  }, [history]);
 
   useEffect(() => {
     dispatch(
@@ -29,6 +36,10 @@ export default function DramaEpisodePage() {
       }),
     );
   }, [dramaId, episodeId, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchRelatedDramasActions.request({ dramaId: +dramaId }));
+  }, [dramaId, dispatch]);
 
   if (drama === null || dramaEpisode === null) {
     return <Wrapper />;
@@ -131,7 +142,22 @@ export default function DramaEpisodePage() {
           </Card>
         </ContentWithAside.Aside>
       </ContentWithAside>
-      <ContentWithAside asideSize={322} spacing={8}>
+
+      <RelatedDramaSection
+        dramas={relatedDramas ?? []}
+        onDramaClick={handleRelatedDramaClick}
+        css={css`
+          margin-top: 24px;
+        `}
+      />
+
+      <ContentWithAside
+        asideSize={322}
+        spacing={8}
+        css={css`
+          margin-top: 24px;
+        `}
+      >
         <ContentWithAside.Content>
           <Card>
             <Card.Head size={60} />

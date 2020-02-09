@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { deployUrl } from '../environment';
 import { User } from '../models';
 import { rxHttp } from './rx-http';
@@ -28,4 +29,10 @@ export function fetchDrama(dramaId: number) {
 
 export function fetchDramaEpisode(dramaId: number, episodeId: number) {
   return rxHttp.get<DramaEpisodeResponse>(apiUrl(`/dramas/${dramaId}/episodes/${episodeId}`));
+}
+
+export function fetchRelatedDramas(dramaId: number) {
+  return rxHttp
+    .get<DramaResponse[]>(apiUrl(`/dramas/${dramaId}/related`))
+    .pipe(map(dramas => dramas.filter(drama => drama.dramaId !== dramaId)));
 }

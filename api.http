@@ -11,7 +11,8 @@ Authorization: Bearer DRUWA_TEST_TOKEN
 {
   "title": "연애플레이리스트 시즌 1",
   "summary" : "새학기 시작을 풋풋한 대학 청춘 멜로와 함께",
-  "productionCompany" : "플레이리스트"
+  "productionCompany"
+  : "플레이리스트"
 }
 
 ###
@@ -50,7 +51,13 @@ Authorization: Bearer DRUWA_TEST_TOKEN
 }
 
 ###
+GET https://api.druwa.site/dramas/1/images
+###
 
 GET https://api.druwa.site/dramas/1/episodes/74/comments
+
+###
+
+GET https://api.druwa.site/dramas/1/related
 
 ###

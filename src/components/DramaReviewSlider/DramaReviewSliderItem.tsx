@@ -23,7 +23,7 @@ interface Props {
   className?: string;
 }
 
-function DramaReviewCard({
+function DramaReviewSliderItem({
   title,
   body,
   reviewerImageUrl,
@@ -62,7 +62,7 @@ function DramaReviewCard({
   );
 }
 
-export default memo(DramaReviewCard);
+export default memo(DramaReviewSliderItem);
 
 const Wrapper = styled.div`
   padding-left: 18px;

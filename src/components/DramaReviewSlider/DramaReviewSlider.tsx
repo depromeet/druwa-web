@@ -2,14 +2,14 @@ import { subHours, subMinutes } from 'date-fns';
 import React from 'react';
 import { selectBackgroundColor, styled } from '../../styles';
 import { Slider } from '../../ui/slider';
-import ReviewCard from './DramaReviewCard';
+import DramaReviewSliderItem from './DramaReviewSliderItem';
 
 export default function DramaReviewSlider() {
   return (
     <Wrapper>
       <Slider itemSize={283} spacing={16}>
         <Slider.Item>
-          <ReviewCard
+          <DramaReviewSliderItem
             title="1. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
@@ -19,7 +19,7 @@ export default function DramaReviewSlider() {
           />
         </Slider.Item>
         <Slider.Item>
-          <ReviewCard
+          <DramaReviewSliderItem
             title="2. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
@@ -29,7 +29,7 @@ export default function DramaReviewSlider() {
           />
         </Slider.Item>
         <Slider.Item>
-          <ReviewCard
+          <DramaReviewSliderItem
             title="3. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
@@ -39,7 +39,7 @@ export default function DramaReviewSlider() {
           />
         </Slider.Item>
         <Slider.Item>
-          <ReviewCard
+          <DramaReviewSliderItem
             title="4. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
@@ -49,7 +49,7 @@ export default function DramaReviewSlider() {
           />
         </Slider.Item>
         <Slider.Item>
-          <ReviewCard
+          <DramaReviewSliderItem
             title="5. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}
@@ -59,7 +59,7 @@ export default function DramaReviewSlider() {
           />
         </Slider.Item>
         <Slider.Item>
-          <ReviewCard
+          <DramaReviewSliderItem
             title="6. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
             body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
             rating={4.5}

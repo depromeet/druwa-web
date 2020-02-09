@@ -13,3 +13,9 @@ export const fetchDramaWithEpisodeActions = createAsyncAction(
   },
   { error: Error }
 >();
+
+export const fetchRelatedDramasActions = createAsyncAction(
+  'drama-episode/FETCH_RELATED_DRAMAS',
+  'drama-episode/FETCH_RELATED_DRAMAS_COMPLETE',
+  'drama-episode/FETCH_RELATED_DRAMAS_FAIL',
+)<{ dramaId: number }, { relatedDramas: Drama[] }, { error: Error }>();

@@ -3,12 +3,13 @@ import { ActionType, createReducer } from 'typesafe-actions';
 import { Drama, DramaEpisode } from '../../models';
 import * as dramaEpisodeActions from '../actions/drama-episode';
 
-const { fetchDramaWithEpisodeActions } = dramaEpisodeActions;
+const { fetchDramaWithEpisodeActions, fetchRelatedDramasActions } = dramaEpisodeActions;
 
 export type DramaEpisodeState = Readonly<{
   isRequesting: boolean;
   drama: Drama | null;
   episode: DramaEpisode | null;
+  relatedDramas: Drama[] | null;
 }>;
 
 export const dramaEpisodeReducer = createReducer<
@@ -18,6 +19,7 @@ export const dramaEpisodeReducer = createReducer<
   isRequesting: false,
   drama: null,
   episode: null,
+  relatedDramas: null,
 })
   .handleAction(fetchDramaWithEpisodeActions.request, state =>
     produce(state, draft => {
@@ -34,5 +36,10 @@ export const dramaEpisodeReducer = createReducer<
   .handleAction(fetchDramaWithEpisodeActions.failure, state =>
     produce(state, draft => {
       draft.isRequesting = false;
+    }),
+  )
+  .handleAction(fetchRelatedDramasActions.success, (state, action) =>
+    produce(state, draft => {
+      draft.relatedDramas = action.payload.relatedDramas;
     }),
   );

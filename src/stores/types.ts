@@ -13,6 +13,7 @@ type EpicApiDependency = Readonly<{
   authorize: (token: string) => Observable<User>;
   fetchDrama: (dramaId: number) => Observable<Drama>;
   fetchDramaEpisode: (dramaId: number, episodeId: number) => Observable<DramaEpisode>;
+  fetchRelatedDramas: (dramaId: number) => Observable<Drama[]>;
 }>;
 
 export type EpicDependency = Readonly<{

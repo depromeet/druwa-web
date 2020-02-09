@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useSpring } from 'react-spring';
 import { BehaviorSubject, EMPTY, fromEvent, merge, Subject } from 'rxjs';
 import { useObservable } from 'rxjs-hooks';
@@ -23,20 +23,18 @@ function getSliderScrollState(elem: HTMLElement | null) {
   };
 }
 
-function shouldShowLeftNav({ scrollLeft }: SliderScrollState) {
-  return scrollLeft > 0;
+function shouldShowLeftNav({ scrollLeft, scrollWidth, width }: SliderScrollState) {
+  return scrollLeft > 0 && scrollWidth > width;
 }
 
 function shouldShowRightNav({ scrollLeft, scrollWidth, width }: SliderScrollState) {
-  return scrollLeft === 0 ? true : scrollLeft < scrollWidth - width;
+  return (scrollLeft === 0 ? true : scrollLeft < scrollWidth - width) && scrollWidth > width;
 }
 
 export function useSliderNavControl(elem: HTMLElement | null) {
-  const scrollState = getSliderScrollState(elem);
-
   const canUseNav = useMemo(() => supportsElementScroll(), []);
-  const [showLeftNav, setLeftNavShowState] = useState(shouldShowLeftNav(scrollState));
-  const [showRightNav, setRightNavShowState] = useState(shouldShowRightNav(scrollState));
+  const [showLeftNav, setLeftNavShowState] = useState(false);
+  const [showRightNav, setRightNavShowState] = useState(false);
 
   const leftNavStyle = useSpring({
     opacity: canUseNav && showLeftNav ? 1 : 0,
@@ -50,6 +48,13 @@ export function useSliderNavControl(elem: HTMLElement | null) {
       opacity: 0,
     },
   });
+
+  useLayoutEffect(() => {
+    const scrollState = getSliderScrollState(elem);
+
+    setLeftNavShowState(shouldShowLeftNav(scrollState));
+    setRightNavShowState(shouldShowRightNav(scrollState));
+  }, [elem]);
 
   useObservable<void, [HTMLElement | null]>(
     input$ =>
