@@ -2,7 +2,14 @@ import { map } from 'rxjs/operators';
 import { deployUrl } from '../environment';
 import { User } from '../models';
 import { rxHttp } from './rx-http';
-import { WithToken, DramaEpisodeResponse, DramaResponse } from './types';
+import {
+  DramaEpisodeResponse,
+  DramaResponse,
+  LoginPayload,
+  SignupOrLoginResponse,
+  SignupPayload,
+  WithToken,
+} from './types';
 
 const API_URL = 'https://api.druwa.site';
 const apiUrl = (path: string) => `${API_URL}${path}`;
@@ -35,4 +42,20 @@ export function fetchRelatedDramas(dramaId: number) {
   return rxHttp
     .get<DramaResponse[]>(apiUrl(`/dramas/${dramaId}/related`))
     .pipe(map(dramas => dramas.filter(drama => drama.dramaId !== dramaId)));
+}
+
+export function requestSignup(payload: SignupPayload) {
+  return rxHttp.post<SignupOrLoginResponse>(apiUrl('/users/signup'), payload, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+export function requestLogin(payload: LoginPayload) {
+  return rxHttp.post<SignupOrLoginResponse>(apiUrl('/users/login'), payload, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }

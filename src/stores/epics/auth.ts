@@ -47,17 +47,21 @@ const loginWithTokenEpic: Epic = (action$, _, { api }) =>
   action$.pipe(
     filter(isActionOf(loginWithTokenActions.request)),
     switchMap(action => {
-      const { token } = action.payload;
+      const {
+        token,
+        successMessage = '로그인이 완료되었습니다.',
+        failureMessage = '로그인에 실패하였습니다.',
+      } = action.payload;
 
       return api.authorize(token).pipe(
         tap(() => {
           storage.set(authTokenStorageKey, token);
-          alert('로그인이 완료되었습니다.');
+          alert(successMessage);
         }),
         map(user => loginWithTokenActions.success({ token, user })),
         catchError(error => {
           storage.delete(authTokenStorageKey);
-          alert('로그인에 실패하였습니다.');
+          alert(failureMessage);
 
           return of(loginWithTokenActions.failure({ error }));
         }),

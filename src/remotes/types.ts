@@ -3,6 +3,17 @@ export type WithToken<Payload = {}> = Payload & {
   token: string;
 };
 
+export interface SignupPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
 // Responses
 export interface DramaResponse {
   dramaId: number;
@@ -27,6 +38,10 @@ export interface DramaEpisodeResponse {
   dislike: number;
   totalComments: number;
   durationInMillis: number;
+}
+
+export interface SignupOrLoginResponse {
+  token: string;
 }
 
 // Errors

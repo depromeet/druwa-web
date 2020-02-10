@@ -7,5 +7,5 @@ export function useInputValue<T extends HTMLElement = HTMLInputElement>(initialV
     setValue((event.target as any).value);
   }, []);
 
-  return [value, handleValueChange] as const;
+  return [value, handleValueChange, setValue] as const;
 }

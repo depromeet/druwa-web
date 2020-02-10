@@ -1,18 +1,25 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { cssButtonReset, fontWeights, styled } from '../../styles';
 import { AriaTab } from '../../ui/aria-tab';
 import { Dialog } from '../../ui/dialog';
 import Spacing from '../Spacing';
-import LoginForm from './LoginForm';
+import LoginForm, { LoginFormData, LoginFormError } from './LoginForm';
 import OAuthLogins from './OAuthLogins';
+import SignupForm, { SignupFormData, SignupFormError } from './SignupForm';
 
 interface Props {
   open: boolean;
   /** @default true */
   closeOnDimmerClick?: boolean;
+  loginProcessing?: boolean;
+  loginFormError?: LoginFormError;
+  signupProcessing?: boolean;
+  signupFormError?: SignupFormError;
   className?: string;
 
   onLoginWithToken?(token: string): void;
+  onLogin?(data: LoginFormData): void;
+  onSignup?(data: SignupFormData): void;
   onClose?(): void;
 }
 
@@ -30,11 +37,23 @@ const tabItems = [
 function LoginOrSignupDialog({
   open,
   closeOnDimmerClick,
+  loginProcessing,
+  loginFormError,
+  signupProcessing,
+  signupFormError,
   onLoginWithToken,
+  onLogin,
+  onSignup,
   onClose,
   className,
 }: Props) {
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
+
+  useEffect(() => {
+    if (open) {
+      setSelectedTab(tabItems[0]);
+    }
+  }, [open]);
 
   return (
     <Dialog
@@ -60,11 +79,24 @@ function LoginOrSignupDialog({
           </TabList>
           <TabPanel item={tabItems[0]}>
             <Spacing size={30} />
-            <LoginForm />
+            <LoginForm
+              loading={loginProcessing}
+              error={loginFormError}
+              clearValue={open}
+              onSubmit={onLogin}
+            />
             <Spacing size={48} />
             <OAuthLogins onLogin={onLoginWithToken} />
           </TabPanel>
-          <TabPanel item={tabItems[1]}>TODO</TabPanel>
+          <TabPanel item={tabItems[1]}>
+            <Spacing size={30} />
+            <SignupForm
+              loading={signupProcessing}
+              error={signupFormError}
+              clearValue={open}
+              onSubmit={onSignup}
+            />
+          </TabPanel>
         </AriaTab>
       </Content>
     </Dialog>

@@ -21,4 +21,8 @@ export const loginWithTokenActions = createAsyncAction(
   'auth/LOGIN_WITH_TOKEN',
   'auth/LOGIN_WITH_TOKEN_COMPLETE',
   'auth/LOGIN_WITH_TOKEN_FAIL',
-)<{ token: string }, { token: string; user: User }, { error: Error }>();
+)<
+  { token: string; successMessage?: string; failureMessage?: string },
+  { token: string; user: User },
+  { error: Error }
+>();
