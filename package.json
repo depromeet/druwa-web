@@ -10,6 +10,7 @@
   "author": "",
   "private": true,
   "dependencies": {
+    "@babel/polyfill": "^7.8.3",
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
     "classnames": "^2.2.6",

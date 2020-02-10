@@ -9,7 +9,7 @@ const DEPLOY_URL = process.env.URL || 'http://localhost:4200';
 
 module.exports = {
   mode: PROD ? 'production' : 'development',
-  entry: './src/main.tsx',
+  entry: ['@babel/polyfill', './src/main.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: DEPLOY_URL,
