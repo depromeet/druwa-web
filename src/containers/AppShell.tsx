@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MainFooter from '../components/MainFooter';
-import { UIProvider } from '../core';
+import { ScrollToTopOnLocationChange, UIProvider } from '../core';
 import { withRootStore } from '../stores';
 import { authorizeWithTokenWhichFromStorageAction } from '../stores/actions';
 import { selectIsAuthInitialized } from '../stores/selectors';
 import { defaultDarkTheme } from '../styles';
 import DramaEpisodePage from './DramaEpisodePage';
+import DramaFirstEpisodePage from './DramaFirstEpisodePage';
 import LandingPage from './LandingPage';
 import LoginDialogProvider from './LoginDialogProvider';
 import MainHeader from './MainHeader';
@@ -28,12 +29,16 @@ function AppShell() {
     <UIProvider theme={defaultDarkTheme}>
       <LoginDialogProvider>
         <Router>
+          <ScrollToTopOnLocationChange />
           <Switch>
             <Route path="/" exact={true}>
               <LandingPage />
             </Route>
             <Route path="/home" exact={true}>
               <MainPage />
+            </Route>
+            <Route path="/drama/:dramaId" exact={true}>
+              <DramaFirstEpisodePage />
             </Route>
             <Route path="/drama/:dramaId/episode/:episodeId" exact={true}>
               <MainHeader />

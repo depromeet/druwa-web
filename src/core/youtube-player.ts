@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 let youtubePlayerApiScriptElement: HTMLScriptElement | null = null;
 let yt: GlobalYoutubePlayerVar | null = null;
@@ -100,6 +100,7 @@ export interface YoutubePlayer {
    */
   getDuration(): number;
   getVideoUrl(): string;
+  destroy(): void;
 }
 
 interface YoutubePlayerHookOptions
@@ -109,27 +110,25 @@ interface YoutubePlayerHookOptions
   onError?(errorCode: YoutubePlayerErrorCodes): void;
 }
 
-export function useYoutubePlayer(
-  elementId: string,
-  videoId: string,
-  options: YoutubePlayerHookOptions = {},
-) {
+export function useYoutubePlayer(videoId: string, options: YoutubePlayerHookOptions = {}) {
   initializeYoutubePlayerApiScript();
 
   const { width, height, playerVars, onReady, onStateChange, onError } = options;
-  const [player, setPlayer] = useState<YoutubePlayer | null>(null);
+  const playerRef = useRef<YoutubePlayer | null>(null);
 
   useEffect(() => {
     readyForYoutubePlayerInitialize(Player => {
+      playerRef.current?.destroy();
+      playerRef.current = null;
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const ply = new Player(elementId, {
+      playerRef.current = new Player('main-video', {
         videoId,
         width,
         height,
         playerVars,
         events: {
           onReady(event) {
-            setPlayer(event.target);
             onReady?.(event.target);
           },
           onStateChange(event) {
@@ -141,13 +140,6 @@ export function useYoutubePlayer(
         },
       });
     });
-
-    return () => {
-      player?.stopVideo();
-      player?.clearVideo();
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return player;
+  }, [videoId]);
 }

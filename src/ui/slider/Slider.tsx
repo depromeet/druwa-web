@@ -19,8 +19,6 @@ interface Props {
   leftNavTitle?: string;
   rightNavTitle?: string;
   children: ReactNode;
-
-  onPageChange?(page: number): void;
 }
 
 export default function Slider({

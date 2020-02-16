@@ -44,6 +44,10 @@ export function fetchRelatedDramas(dramaId: number) {
     .pipe(map(dramas => dramas.filter(drama => drama.dramaId !== dramaId)));
 }
 
+export function fetchDramaEpisodeList(dramaId: number) {
+  return rxHttp.get<DramaEpisodeResponse[]>(apiUrl(`/dramas/${dramaId}/episodes`));
+}
+
 export function requestSignup(payload: SignupPayload) {
   return rxHttp.post<SignupOrLoginResponse>(apiUrl('/users/signup'), payload, {
     headers: {

@@ -4,3 +4,4 @@ export * from './Portal';
 export * from './rx-animations';
 export * from './supports';
 export * from './youtube-player';
+export * from './ScrollToTopOnLocationChange';

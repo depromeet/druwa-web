@@ -12,6 +12,7 @@ export type State = StateType<typeof rootReducer>;
 type EpicApiDependency = Readonly<{
   authorize: (token: string) => Observable<User>;
   fetchDrama: (dramaId: number) => Observable<Drama>;
+  fetchDramaEpisodeList: (dramaId: number) => Observable<DramaEpisode[]>;
   fetchDramaEpisode: (dramaId: number, episodeId: number) => Observable<DramaEpisode>;
   fetchRelatedDramas: (dramaId: number) => Observable<Drama[]>;
 }>;

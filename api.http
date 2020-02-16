@@ -27,11 +27,11 @@ Content-Type: application/json
 Authorization: Bearer DRUWA_TEST_TOKEN
 
 {
-  "title" : "좋아하는 사람에게 솔직해야 하는 이유",
+  "title" : "두번째 에피소드",
   "summary" : "좋아하는 사람에게 솔직해야 하는 이유\n세상 어느 고민 상담이 저렇게 꿀범벅이죠..?\uD83C\uDF6F\n내 광대 해발고도 백두산보다 높은 순간\uD83E\uDD21",
-  "episodeNumber" : 1,
+  "episodeNumber" : 2,
   "durationInMillis" : 911000,
-  "playUrl": "https://youtu.be/wKZUB4lNP6k"
+  "playUrl": "https://youtu.be/8g605ToX_4A"
 }
 
 ###
@@ -48,7 +48,7 @@ Authorization: Bearer DRUWA_TEST_TOKEN
 
 {
   "depth": 1,
-  "contents": "Hello World!"
+  "contents": "1"
 }
 
 ###
@@ -67,6 +67,10 @@ PATCH https://api.druwa.site/dramas/1/like
 Authorization: Bearer DRUWA_TEST_TOKEN
 
 ###
+PATCH https://api.druwa.site/dramas/1/dislike
+Authorization: Bearer DRUWA_TEST_TOKEN
+
+###
 
 POST https://api.druwa.site/users/signup
 Accept: application/json
@@ -77,5 +81,9 @@ Content-Type: application/json
   "email": "test@test.com",
   "password": "12345678"
 }
+
+###
+
+GET https://api.druwa.site/dramas/1/episodes
 
 ###

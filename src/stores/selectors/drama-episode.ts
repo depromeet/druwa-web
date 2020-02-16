@@ -11,3 +11,18 @@ export const selectRelatedDramas = createSelector(
   selectDramaEpisodeState,
   state => state.relatedDramas,
 );
+
+export const selectDramaEpisodeList = createSelector(
+  selectDramaEpisodeState,
+  state => state.episodeList,
+);
+
+export const selectShouldFetchDramaEpisodeList = createSelector(
+  selectDramaEpisodeList,
+  episodeList => episodeList.length === 0,
+);
+
+export const selectDramaEpisodeListWithoutCurrent = createSelector(
+  [selectDramaEpisode, selectDramaEpisodeList],
+  (currentEpisode, episodes) => episodes.filter(episode => episode.id !== currentEpisode?.id),
+);

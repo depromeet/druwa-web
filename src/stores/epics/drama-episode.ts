@@ -2,7 +2,11 @@ import { combineEpics } from 'redux-observable';
 import { forkJoin, of } from 'rxjs';
 import { catchError, filter, ignoreElements, map, switchMap, tap } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
-import { fetchDramaWithEpisodeActions, fetchRelatedDramasActions } from '../actions';
+import {
+  fetchDramaEpisodeListActions,
+  fetchDramaWithEpisodeActions,
+  fetchRelatedDramasActions,
+} from '../actions';
 import { Epic } from '../types';
 
 const fetchDramaEpisodeEpic: Epic = (action$, _, { api }) =>
@@ -29,6 +33,17 @@ const fetchRelatedDramasEpisodeEpic: Epic = (action$, _, { api }) =>
     ),
   );
 
+const fetchDramaEpisodeListEpic: Epic = (action$, _, { api }) =>
+  action$.pipe(
+    filter(isActionOf(fetchDramaEpisodeListActions.request)),
+    switchMap(action =>
+      api.fetchDramaEpisodeList(action.payload.dramaId).pipe(
+        map(episodes => fetchDramaEpisodeListActions.success({ episodes })),
+        catchError(error => of(fetchDramaEpisodeListActions.failure({ error }))),
+      ),
+    ),
+  );
+
 const handleInvalidDramaEpisodeErrorEpic: Epic = action$ =>
   action$.pipe(
     filter(isActionOf(fetchDramaWithEpisodeActions.failure)),
@@ -42,5 +57,6 @@ const handleInvalidDramaEpisodeErrorEpic: Epic = action$ =>
 export const dramaEpisodeEpic = combineEpics(
   fetchDramaEpisodeEpic,
   fetchRelatedDramasEpisodeEpic,
+  fetchDramaEpisodeListEpic,
   handleInvalidDramaEpisodeErrorEpic,
 );

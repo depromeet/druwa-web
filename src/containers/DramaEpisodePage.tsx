@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import DramaEpisodePlayer from '../components/DramaEpisodePlayer';
@@ -8,8 +8,19 @@ import DramaEpisodeSummaryCard from '../components/DramaEpisodeSummaryCard';
 import DramaEpisodeTitle from '../components/DramaEpisodeTitle';
 import RelatedDramaSection from '../components/RelatedDramaSection';
 import Spacing from '../components/Spacing';
-import { fetchDramaWithEpisodeActions, fetchRelatedDramasActions } from '../stores/actions';
-import { selectDrama, selectDramaEpisode, selectRelatedDramas } from '../stores/selectors';
+import { DramaEpisode } from '../models';
+import {
+  fetchDramaEpisodeListActions,
+  fetchDramaWithEpisodeActions,
+  fetchRelatedDramasActions,
+} from '../stores/actions';
+import {
+  selectDrama,
+  selectDramaEpisode,
+  selectDramaEpisodeListWithoutCurrent,
+  selectRelatedDramas,
+  selectShouldFetchDramaEpisodeList,
+} from '../stores/selectors';
 import { styled } from '../styles';
 import { Card } from '../ui/card';
 import { ContentWithAside } from '../ui/layout/ContentWithAside';
@@ -23,10 +34,24 @@ export default function DramaEpisodePage() {
   const drama = useSelector(selectDrama);
   const dramaEpisode = useSelector(selectDramaEpisode);
   const relatedDramas = useSelector(selectRelatedDramas);
+  const shouldFetchDramaEpisodes = useSelector(selectShouldFetchDramaEpisodeList);
+  const dramaEpisodes = useSelector(selectDramaEpisodeListWithoutCurrent);
+
+  const currentEpisodeIndex = useMemo(
+    () => dramaEpisodes.findIndex(episode => episode.id === dramaEpisode?.id),
+    [dramaEpisodes, dramaEpisode],
+  );
 
   const handleRelatedDramaClick = useCallback(() => {
     history.push('/'); // TODO
   }, [history]);
+
+  const handleDramaEpisodeClick = useCallback(
+    (episode: DramaEpisode) => {
+      history.push(`/drama/${dramaId}/episode/${episode.id}`);
+    },
+    [history, dramaId],
+  );
 
   useEffect(() => {
     dispatch(
@@ -40,6 +65,12 @@ export default function DramaEpisodePage() {
   useEffect(() => {
     dispatch(fetchRelatedDramasActions.request({ dramaId: +dramaId }));
   }, [dramaId, dispatch]);
+
+  useEffect(() => {
+    if (shouldFetchDramaEpisodes) {
+      dispatch(fetchDramaEpisodeListActions.request({ dramaId: +dramaId }));
+    }
+  }, [dramaId, shouldFetchDramaEpisodes, dispatch]);
 
   if (drama === null || dramaEpisode === null) {
     return <Wrapper />;
@@ -77,67 +108,16 @@ export default function DramaEpisodePage() {
               height: 556px;
             `}
           >
-            <DramaEpisodePlaylist scrollIndexTo={5}>
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={1}
-                episodeTitle="굳세어라 청춘"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={2}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
-              <DramaEpisodePlaylistItem
-                thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
-                episodeNumber={3}
-                episodeTitle="밀당의 기술"
-              />
+            <DramaEpisodePlaylist scrollIndexTo={currentEpisodeIndex}>
+              {dramaEpisodes.map(episode => (
+                <DramaEpisodePlaylistItem
+                  key={episode.id}
+                  thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
+                  episodeNumber={episode.number}
+                  episodeTitle={episode.title}
+                  onClick={() => handleDramaEpisodeClick(episode)}
+                />
+              ))}
             </DramaEpisodePlaylist>
           </Card>
         </ContentWithAside.Aside>

@@ -3,21 +3,14 @@ import { useYoutubePlayer } from '../core';
 import { deployUrl } from '../environment';
 import { styled } from '../styles';
 
-let uniqueId = 0;
-
 interface Props {
-  id?: string;
   videoId: string;
   className?: string;
 }
 
 // TODO: 썸네일 추가
-function DramaEpisodePlayer({
-  id = `drama-episode-player-${uniqueId++}`,
-  videoId,
-  className,
-}: Props) {
-  useYoutubePlayer(id, videoId, {
+function DramaEpisodePlayer({ videoId, className }: Props) {
+  useYoutubePlayer(videoId, {
     width: 854,
     height: 481,
     playerVars: {
@@ -35,7 +28,7 @@ function DramaEpisodePlayer({
 
   return (
     <Wrapper className={className}>
-      <Inner id={id} />
+      <Inner id="main-video" />
     </Wrapper>
   );
 }

@@ -42,7 +42,7 @@ function DramaEpisodePlaylistItem({
       <Wrapper aria-labelledby={id} onClick={onClick}>
         <Thumbnail backgroundImageUrl={thumbnailImageUrl} />
         <Content>
-          <EpisodeNumber>{episodeNumber.toString().padStart(2, '0')}</EpisodeNumber>
+          <EpisodeNumber>EP. {episodeNumber.toString().padStart(2, '0')}</EpisodeNumber>
           <EpisodeTitle id={id}>{episodeTitle}</EpisodeTitle>
         </Content>
       </Wrapper>
@@ -58,6 +58,7 @@ const Wrapper = styled.button`
   padding: 0;
   background: transparent;
   display: flex;
+  width: 100%;
   height: ${SIZE}px;
 `;
 
@@ -74,8 +75,8 @@ const Thumbnail = styled.div<{ backgroundImageUrl: string }>`
 
 const Content = styled.div`
   flex: 1 1 auto;
-  display: block;
   height: ${SIZE}px;
+  min-width: 0;
 `;
 
 const EpisodeNumber = styled.span`
