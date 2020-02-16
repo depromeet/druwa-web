@@ -23,7 +23,9 @@ export function DramaSliderTypeBItem({ imageUrl, subTitle, title, className, onC
   );
 }
 
-const Item = styled(Slider2.Item)``;
+const Item = styled(Slider2.Item)`
+  cursor: pointer;
+`;
 
 const Wrapper = styled.div`
   position: relative;

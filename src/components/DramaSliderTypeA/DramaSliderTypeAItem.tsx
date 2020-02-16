@@ -22,7 +22,9 @@ export function DramaSliderTypeAItem({ imageUrl, subTitle, title, className, onC
   );
 }
 
-const Item = styled(Slider2.Item)``;
+const Item = styled(Slider2.Item)`
+  cursor: pointer;
+`;
 
 const Wrapper = styled.div`
   display: block;
