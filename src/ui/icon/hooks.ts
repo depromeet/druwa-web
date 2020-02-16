@@ -1,12 +1,18 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BehaviorSubject, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
+const iconSaved = new Map<string, string>();
 const isIconName = (iconName: string | undefined): iconName is string => iconName !== undefined;
 
 function getIcon(iconName: string) {
   const filepath = `/assets/icon/icon-${iconName}.svg`;
+
+  if (iconSaved.has(filepath)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return of(iconSaved.get(filepath)!);
+  }
 
   return ajax({
     method: 'GET',
@@ -14,6 +20,9 @@ function getIcon(iconName: string) {
     responseType: 'text',
   }).pipe(
     map(data => data.response as string),
+    tap(iconData => {
+      iconSaved.set(filepath, iconData);
+    }),
     catchError(() => of('')),
   );
 }
