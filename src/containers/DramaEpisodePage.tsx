@@ -8,7 +8,7 @@ import DramaEpisodeSummaryCard from '../components/DramaEpisodeSummaryCard';
 import DramaEpisodeTitle from '../components/DramaEpisodeTitle';
 import RelatedDramaSection from '../components/RelatedDramaSection';
 import Spacing from '../components/Spacing';
-import { DramaEpisode } from '../models';
+import { Drama, DramaEpisode } from '../models';
 import {
   fetchDramaEpisodeListActions,
   fetchDramaWithEpisodeActions,
@@ -42,9 +42,12 @@ export default function DramaEpisodePage() {
     [dramaEpisodes, dramaEpisode],
   );
 
-  const handleRelatedDramaClick = useCallback(() => {
-    history.push('/'); // TODO
-  }, [history]);
+  const handleRelatedDramaClick = useCallback(
+    (drama: Drama) => {
+      history.push(`/drama/${drama.id}`);
+    },
+    [history],
+  );
 
   const handleDramaEpisodeClick = useCallback(
     (episode: DramaEpisode) => {
