@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { fontWeights, lineHeights, selectForegroundColor, styled } from '../../styles';
 import { Slider2 } from '../../ui/slider2';
 
@@ -10,17 +10,19 @@ interface Props {
   onClick?(): void;
 }
 
-export function DramaSliderTypeAItem({ imageUrl, subTitle, title, className, onClick }: Props) {
-  return (
-    <Item onClick={onClick} className={className}>
-      <Wrapper>
-        <Image style={{ backgroundImage: `url(${imageUrl})` }} />
-        <SubTitle>{subTitle}</SubTitle>
-        <Title>{title}</Title>
-      </Wrapper>
-    </Item>
-  );
-}
+export const DramaSliderTypeAItem = memo<Props>(
+  ({ imageUrl, subTitle, title, className, onClick }) => {
+    return (
+      <Item onClick={onClick} className={className}>
+        <Wrapper>
+          <Image style={{ backgroundImage: `url(${imageUrl})` }} />
+          <SubTitle>{subTitle}</SubTitle>
+          <Title>{title}</Title>
+        </Wrapper>
+      </Item>
+    );
+  },
+);
 
 const Item = styled(Slider2.Item)`
   cursor: pointer;

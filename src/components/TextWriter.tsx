@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef } from 'react';
+import React, { memo, ReactNode, useCallback, useRef } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 import { useInputValue } from '../hooks';
 import {
@@ -15,13 +15,22 @@ import { Button } from '../ui/button';
 interface Props {
   maxLength?: number;
   disabled?: boolean;
+  disabledText?: ReactNode;
   placeholder?: string;
   className?: string;
   onLogin?(): void;
   onSubmit?(text: string): void;
 }
 
-function TextWriter({ maxLength, disabled, placeholder, className, onLogin, onSubmit }: Props) {
+function TextWriter({
+  maxLength,
+  disabled,
+  disabledText = '댓글을',
+  placeholder,
+  className,
+  onLogin,
+  onSubmit,
+}: Props) {
   const [value, setValue] = useInputValue<HTMLTextAreaElement>('');
 
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -46,9 +55,9 @@ function TextWriter({ maxLength, disabled, placeholder, className, onLogin, onSu
           onChange={setValue}
         />
         {disabled ? (
-          <Placeholder>
-            댓글을 작성하려면 <LoginAnchor onClick={onLogin}>로그인</LoginAnchor> 해주세요.
-          </Placeholder>
+          <Disabled>
+            {disabledText} 작성하려면 <LoginAnchor onClick={onLogin}>로그인</LoginAnchor> 해주세요.
+          </Disabled>
         ) : null}
       </TextareaWrapper>
       <Tools>
@@ -95,7 +104,7 @@ const Textarea = styled(TextareaAutosize)`
   }
 `;
 
-const Placeholder = styled.div`
+const Disabled = styled.div`
   position: absolute;
   left: 16px;
   top: 16px;

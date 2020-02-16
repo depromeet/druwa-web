@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { fontWeights, lineHeights, selectForegroundColor, styled } from '../../styles';
 import { Slider2 } from '../../ui/slider2';
 
@@ -10,18 +10,21 @@ interface Props {
   onClick?(): void;
 }
 
-export function DramaSliderTypeBItem({ imageUrl, subTitle, title, className, onClick }: Props) {
-  return (
-    <Item onClick={onClick} className={className}>
-      <Wrapper style={{ backgroundImage: `url(${imageUrl})` }}>
-        <Content>
-          <SubTitle>{subTitle}</SubTitle>
-          <Title>{title}</Title>
-        </Content>
-      </Wrapper>
-    </Item>
-  );
-}
+export const DramaSliderTypeBItem = memo<Props>(
+  ({ imageUrl, subTitle, title, className, onClick }) => {
+    return (
+      <Item onClick={onClick} className={className}>
+        <Wrapper>
+          <Background style={{ backgroundImage: `url(${imageUrl})` }} />
+          <Content>
+            <SubTitle>{subTitle}</SubTitle>
+            <Title>{title}</Title>
+          </Content>
+        </Wrapper>
+      </Item>
+    );
+  },
+);
 
 const Item = styled(Slider2.Item)`
   cursor: pointer;
@@ -29,11 +32,27 @@ const Item = styled(Slider2.Item)`
 
 const Wrapper = styled.div`
   position: relative;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   width: 100%;
   height: 343px;
+  overflow: hidden;
+`;
+
+const Background = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: transform 335ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.03);
+  }
 `;
 
 const Content = styled.div`
@@ -42,6 +61,7 @@ const Content = styled.div`
   left: 0;
   right: 0;
   bottom: 32px;
+  z-index: 1;
 `;
 
 const SubTitle = styled.span`
