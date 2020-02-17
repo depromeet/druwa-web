@@ -164,7 +164,9 @@ export default function DramaEpisodePage() {
               </Tabs>
             </Card.Head>
             <Card.Content>
-              {selectedTab === 'comments' ? <DramaEpisodeCommentSection /> : null}
+              {selectedTab === 'comments' ? (
+                <DramaEpisodeCommentSection dramaId={+dramaId} episodeId={+episodeId} />
+              ) : null}
               {selectedTab === 'reviews' ? <DramaEpisodeReviewSection /> : null}
             </Card.Content>
           </Card>

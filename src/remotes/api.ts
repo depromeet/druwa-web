@@ -3,6 +3,8 @@ import { deployUrl } from '../environment';
 import { User } from '../models';
 import { rxHttp } from './rx-http';
 import {
+  CommentLikeStatusResponse,
+  CommentResponse,
   DramaEpisodeResponse,
   DramaResponse,
   LoginPayload,
@@ -20,9 +22,12 @@ export const oauthApiUrls = {
   kakao: apiUrl(`/oauth2/authorize/kakao?redirect_uri=${oauthRedirectUrl}`),
 } as const;
 
-const authorizationHeader = (token: string) => ({
-  Authorization: `Bearer ${token}`,
-});
+const authorizationHeader = (token?: string): Record<string, string> =>
+  token != null
+    ? {
+        Authorization: `Bearer ${token}`,
+      }
+    : {};
 
 export function requestAuthorize(payload: WithToken) {
   return rxHttp.get<User>(apiUrl('/users/me'), {
@@ -62,4 +67,47 @@ export function requestLogin(payload: LoginPayload) {
       'Content-Type': 'application/json',
     },
   });
+}
+
+export function fetchDramaEpisodeComments(dramaId: number, episodeId: number, authToken?: string) {
+  return rxHttp.get<CommentResponse[]>(
+    apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments`),
+    {
+      headers: authorizationHeader(authToken),
+    },
+  );
+}
+
+export function patchDramaEpisodeCommentLike(
+  dramaId: number,
+  episodeId: number,
+  commentId: number,
+  authToken: string,
+) {
+  return rxHttp
+    .patch<Omit<CommentLikeStatusResponse, 'id'>>(
+      apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments/${commentId}/like`),
+      null,
+      {
+        headers: authorizationHeader(authToken),
+      },
+    )
+    .pipe(map(response => ({ id: commentId, ...response })));
+}
+
+export function patchDramaEpisodeCommentDislike(
+  dramaId: number,
+  episodeId: number,
+  commentId: number,
+  authToken: string,
+) {
+  return rxHttp
+    .patch<Omit<CommentLikeStatusResponse, 'id'>>(
+      apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments/${commentId}/dislike`),
+      null,
+      {
+        headers: authorizationHeader(authToken),
+      },
+    )
+    .pipe(map(response => ({ id: commentId, ...response })));
 }

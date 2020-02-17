@@ -17,9 +17,21 @@ interface Props {
   dislikeCount: number;
   didUserLike?: LikeType;
   className?: string;
+
+  onLikeChange?(like: LikeType): void;
 }
 
-function Comment({ body, writerName, writerImageUrl, createdAt, className }: Props) {
+function Comment({
+  body,
+  writerName,
+  writerImageUrl,
+  createdAt,
+  likeCount,
+  dislikeCount,
+  didUserLike,
+  className,
+  onLikeChange,
+}: Props) {
   const distanceToNow = useMemo(
     () => formatDistanceToNow(new Date(createdAt), { addSuffix: false, locale: koLocale }),
     [createdAt],
@@ -37,11 +49,20 @@ function Comment({ body, writerName, writerImageUrl, createdAt, className }: Pro
         <Tools>
           <div>
             <LikeButtonWithCount>
-              <LikeButton type="like" activated={true} />
-              <Count>{formatKiloCount(3)}</Count>
+              <LikeButton
+                type="like"
+                activated={didUserLike === 'like'}
+                onClick={() => onLikeChange?.('like')}
+              />
+              {likeCount > 0 ? <Count>{formatKiloCount(likeCount)}</Count> : null}
             </LikeButtonWithCount>
             <LikeButtonWithCount>
-              <LikeButton type="dislike" activated={false} />
+              <LikeButton
+                type="dislike"
+                activated={didUserLike === 'dislike'}
+                onClick={() => onLikeChange?.('dislike')}
+              />
+              {dislikeCount > 0 ? <Count>{formatKiloCount(dislikeCount)}</Count> : null}
             </LikeButtonWithCount>
           </div>
         </Tools>

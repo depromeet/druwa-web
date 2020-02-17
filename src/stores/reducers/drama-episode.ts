@@ -1,12 +1,14 @@
 import produce from 'immer';
 import { ActionType, createReducer } from 'typesafe-actions';
-import { Drama, DramaEpisode } from '../../models';
+import { Comment, Drama, DramaEpisode } from '../../models';
 import * as dramaEpisodeActions from '../actions/drama-episode';
 
 const {
   fetchDramaWithEpisodeActions,
   fetchRelatedDramasActions,
   fetchDramaEpisodeListActions,
+  fetchDramaEpisodeCommentsActions,
+  patchDramaEpisodeCommentLikeActions,
 } = dramaEpisodeActions;
 
 export type DramaEpisodeState = Readonly<{
@@ -15,6 +17,7 @@ export type DramaEpisodeState = Readonly<{
   episode: DramaEpisode | null;
   episodeList: DramaEpisode[];
   relatedDramas: Drama[] | null;
+  comments: Comment[];
 }>;
 
 export const dramaEpisodeReducer = createReducer<
@@ -26,6 +29,7 @@ export const dramaEpisodeReducer = createReducer<
   episode: null,
   episodeList: [],
   relatedDramas: null,
+  comments: [],
 })
   .handleAction(fetchDramaWithEpisodeActions.request, state =>
     produce(state, draft => {
@@ -52,5 +56,23 @@ export const dramaEpisodeReducer = createReducer<
   .handleAction(fetchDramaEpisodeListActions.success, (state, action) =>
     produce(state, draft => {
       draft.episodeList = action.payload.episodes;
+    }),
+  )
+  .handleAction(fetchDramaEpisodeCommentsActions.success, (state, action) =>
+    produce(state, draft => {
+      draft.comments = action.payload.comments;
+    }),
+  )
+  .handleAction(patchDramaEpisodeCommentLikeActions.success, (state, action) =>
+    produce(state, draft => {
+      const { id, ...update } = action.payload.commentLikeStatus;
+      const index = draft.comments.findIndex(comment => comment.id === id);
+
+      if (index > -1) {
+        draft.comments[index] = {
+          ...draft.comments[index],
+          ...update,
+        };
+      }
     }),
   );

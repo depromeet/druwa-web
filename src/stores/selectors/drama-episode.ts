@@ -26,3 +26,8 @@ export const selectDramaEpisodeListWithoutCurrent = createSelector(
   [selectDramaEpisode, selectDramaEpisodeList],
   (currentEpisode, episodes) => episodes.filter(episode => episode.id !== currentEpisode?.id),
 );
+
+export const selectDramaEpisodeComments = createSelector(
+  selectDramaEpisodeState,
+  state => state.comments,
+);

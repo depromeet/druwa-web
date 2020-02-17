@@ -2,7 +2,7 @@
 import { ajax, AjaxResponse as _AjaxResponse } from 'rxjs/ajax';
 import { map } from 'rxjs/operators';
 
-type AjaxRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type AjaxRequestMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 type AjaxHeaders = Record<string, string>;
 
 interface AjaxRequestOptions {
@@ -45,6 +45,10 @@ function put<T = any>(url: string, body?: any, options?: AjaxRequestOptions) {
   return request<T>(url, 'PUT', { ...options, body });
 }
 
+function patch<T = any>(url: string, body?: any, options?: AjaxRequestOptions) {
+  return request<T>(url, 'PATCH', { ...options, body });
+}
+
 function _delete<T = any>(url: string, body?: any, options?: AjaxRequestOptions) {
   return request<T>(url, 'DELETE', { ...options, body });
 }
@@ -53,5 +57,6 @@ export const rxHttp = {
   get,
   post,
   put,
+  patch,
   delete: _delete,
 };

@@ -9,11 +9,12 @@ const isIconName = (iconName: string | undefined): iconName is string => iconNam
 function getIcon(iconName: string) {
   const filepath = `/assets/icon/icon-${iconName}.svg`;
 
-  if (iconSaved.has(filepath)) {
+  if (iconSaved.has(iconName)) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return of(iconSaved.get(filepath)!);
+    return of(iconSaved.get(iconName)!);
   }
 
+  // FIXME LATER: 한 아이콘에 대해서는 ajax 요청 한번만 하도록 고치기
   return ajax({
     method: 'GET',
     url: filepath,
@@ -21,7 +22,7 @@ function getIcon(iconName: string) {
   }).pipe(
     map(data => data.response as string),
     tap(iconData => {
-      iconSaved.set(filepath, iconData);
+      iconSaved.set(iconName, iconData);
     }),
     catchError(() => of('')),
   );

@@ -44,4 +44,26 @@ export interface SignupOrLoginResponse {
   token: string;
 }
 
+export interface CommentResponse {
+  id: number;
+  depth: number;
+  contents: string;
+  like: number;
+  liked: boolean;
+  dislike: number;
+  disliked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  prev: number;
+  isRoot: boolean;
+}
+
+export interface CommentLikeStatusResponse {
+  id: number;
+  like: number;
+  liked: boolean;
+  dislike: number;
+  disliked: boolean;
+}
+
 // Errors
