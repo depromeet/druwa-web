@@ -89,7 +89,10 @@ export function patchDramaEpisodeCommentLike(
       apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments/${commentId}/like`),
       null,
       {
-        headers: authorizationHeader(authToken),
+        headers: {
+          ...authorizationHeader(authToken),
+          Origin: deployUrl,
+        },
       },
     )
     .pipe(map(response => ({ id: commentId, ...response })));
@@ -106,7 +109,10 @@ export function patchDramaEpisodeCommentDislike(
       apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments/${commentId}/dislike`),
       null,
       {
-        headers: authorizationHeader(authToken),
+        headers: {
+          ...authorizationHeader(authToken),
+          Origin: deployUrl,
+        },
       },
     )
     .pipe(map(response => ({ id: commentId, ...response })));
