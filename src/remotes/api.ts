@@ -93,7 +93,6 @@ export function patchDramaEpisodeCommentLike(
       {
         headers: {
           ...authorizationHeader(authToken),
-          Origin: deployUrl,
         },
       },
     )
@@ -113,7 +112,6 @@ export function patchDramaEpisodeCommentDislike(
       {
         headers: {
           ...authorizationHeader(authToken),
-          Origin: deployUrl,
         },
       },
     )
@@ -134,7 +132,6 @@ export function createDramaEpisodeComment(
   return rxHttp.post<void>(apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments`), payload, {
     headers: {
       'Content-Type': 'application/json',
-      Origin: deployUrl,
       ...authorizationHeader(authToken),
     },
   });
@@ -158,7 +155,6 @@ export function appendDramaEpisodeComment(
     {
       headers: {
         'Content-Type': 'application/json',
-        Origin: deployUrl,
         ...authorizationHeader(authToken),
       },
     },
