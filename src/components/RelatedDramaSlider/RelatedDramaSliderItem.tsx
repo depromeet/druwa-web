@@ -29,7 +29,9 @@ const Wrapper = styled.button`
   ${cssButtonReset};
   background: transparent;
   margin: 0;
+  padding: 0;
   display: block;
+  width: 100%;
   height: 112px;
 `;
 
