@@ -14,6 +14,6 @@ export const userFromResponse = (response: UserResponse): User => ({
   name: response.name,
   email: response.email,
   provider: response.provider,
-  imageUrl: response.imageUrl === '' ? undefined : response.imageUrl,
+  imageUrl: response.imageUrl === '' || response.imageUrl == null ? undefined : response.imageUrl,
   registeredAt: response.registeredAt,
 });
