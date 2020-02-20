@@ -6,6 +6,7 @@ import {
   commentsFromResponse,
   dramaEpisodeFromResponse,
   dramaFromResponse,
+  userFromResponse,
 } from '../models';
 import {
   fetchDrama,
@@ -26,7 +27,7 @@ import { withReduxStore } from './util/hoc';
 const epicMiddleware = createEpicMiddleware<Actions, Actions, State, EpicDependency>({
   dependencies: {
     api: {
-      authorize: token => requestAuthorize({ token }),
+      authorize: token => requestAuthorize({ token }).pipe(map(userFromResponse)),
       fetchDrama: dramaId => fetchDrama(dramaId).pipe(map(dramaFromResponse)),
       fetchDramaEpisodeList: dramaId =>
         fetchDramaEpisodeList(dramaId).pipe(

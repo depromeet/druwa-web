@@ -1,5 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions';
-import { Comment, Drama, DramaEpisode, LikeType, CommentLikeStatus } from '../../models';
+import { Comment, CommentLikeStatus, Drama, DramaEpisode, LikeType } from '../../models';
 
 export const fetchDramaWithEpisodeActions = createAsyncAction(
   'drama-episode/FETCH_DRAMA_EPISODE',

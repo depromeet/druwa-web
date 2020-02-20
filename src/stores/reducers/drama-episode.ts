@@ -27,9 +27,9 @@ export const dramaEpisodeReducer = createReducer<
   isRequesting: false,
   drama: null,
   episode: null,
-  episodeList: [],
+  episodeList: [] as DramaEpisode[],
   relatedDramas: null,
-  comments: [],
+  comments: [] as Comment[],
 })
   .handleAction(fetchDramaWithEpisodeActions.request, state =>
     produce(state, draft => {

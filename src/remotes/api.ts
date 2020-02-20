@@ -1,15 +1,17 @@
 import { map } from 'rxjs/operators';
 import { deployUrl } from '../environment';
-import { User } from '../models';
 import { rxHttp } from './rx-http';
 import {
+  AppendCommentPayload,
   CommentLikeStatusResponse,
   CommentResponse,
+  CreateCommentPayload,
   DramaEpisodeResponse,
   DramaResponse,
   LoginPayload,
   SignupOrLoginResponse,
   SignupPayload,
+  UserResponse,
   WithToken,
 } from './types';
 
@@ -30,7 +32,7 @@ const authorizationHeader = (token?: string): Record<string, string> =>
     : {};
 
 export function requestAuthorize(payload: WithToken) {
-  return rxHttp.get<User>(apiUrl('/users/me'), {
+  return rxHttp.get<UserResponse>(apiUrl('/users/me'), {
     headers: authorizationHeader(payload.token),
   });
 }
@@ -116,4 +118,49 @@ export function patchDramaEpisodeCommentDislike(
       },
     )
     .pipe(map(response => ({ id: commentId, ...response })));
+}
+
+export function createDramaEpisodeComment(
+  dramaId: number,
+  episodeId: number,
+  commentText: string,
+  authToken: string,
+) {
+  const payload: CreateCommentPayload = {
+    depth: 1,
+    contents: commentText,
+  };
+
+  return rxHttp.post<void>(apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments`), payload, {
+    headers: {
+      'Content-Type': 'application/json',
+      Origin: deployUrl,
+      ...authorizationHeader(authToken),
+    },
+  });
+}
+
+export function appendDramaEpisodeComment(
+  dramaId: number,
+  episodeId: number,
+  commentId: number,
+  commentText: string,
+  authToken: string,
+) {
+  const payload: AppendCommentPayload = {
+    depth: 2,
+    contents: commentText,
+  };
+
+  return rxHttp.post<void>(
+    apiUrl(`/dramas/${dramaId}/episodes/${episodeId}/comments/${commentId}`),
+    payload,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Origin: deployUrl,
+        ...authorizationHeader(authToken),
+      },
+    },
+  );
 }

@@ -8,7 +8,7 @@ import DramaEpisodeSummaryCard from '../components/DramaEpisodeSummaryCard';
 import DramaEpisodeTitle from '../components/DramaEpisodeTitle';
 import RelatedDramaSection from '../components/RelatedDramaSection';
 import Spacing from '../components/Spacing';
-import { Drama, DramaEpisode } from '../models';
+import { Drama, DramaEpisode, getHorizontalImage } from '../models';
 import {
   fetchDramaEpisodeListActions,
   fetchDramaWithEpisodeActions,
@@ -119,7 +119,7 @@ export default function DramaEpisodePage() {
               {dramaEpisodes.map(episode => (
                 <DramaEpisodePlaylistItem
                   key={episode.id}
-                  thumbnailImageUrl="/assets/images/drama-episode-thumbnail-placeholder@2x.png"
+                  thumbnailImageUrl={getHorizontalImage(drama)}
                   episodeNumber={episode.number}
                   episodeTitle={episode.title}
                   onClick={() => handleDramaEpisodeClick(episode)}

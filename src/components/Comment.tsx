@@ -4,6 +4,7 @@ import koLocale from 'date-fns/locale/ko';
 import React, { memo, useMemo } from 'react';
 import { LikeType } from '../models';
 import { fontSizes, fontWeights, lineHeights, selectForegroundColor, styled } from '../styles';
+import { Button } from '../ui/button';
 import { ProfileImage } from '../ui/profile-image';
 import { formatKiloCount } from '../utils';
 import LikeButton from './LikeButton';
@@ -17,7 +18,9 @@ interface Props {
   dislikeCount: number;
   didUserLike?: LikeType;
   className?: string;
+  showSubCommentButton?: boolean;
 
+  onSubCommentButtonClick?(): void;
   onLikeChange?(like: LikeType): void;
 }
 
@@ -29,7 +32,9 @@ function Comment({
   likeCount,
   dislikeCount,
   didUserLike,
+  showSubCommentButton = false,
   className,
+  onSubCommentButtonClick,
   onLikeChange,
 }: Props) {
   const distanceToNow = useMemo(
@@ -65,6 +70,11 @@ function Comment({
               {dislikeCount > 0 ? <Count>{formatKiloCount(dislikeCount)}</Count> : null}
             </LikeButtonWithCount>
           </div>
+          {showSubCommentButton ? (
+            <Button size={28} rounded={true} onClick={onSubCommentButtonClick}>
+              댓글
+            </Button>
+          ) : null}
         </Tools>
       </Content>
     </Wrapper>

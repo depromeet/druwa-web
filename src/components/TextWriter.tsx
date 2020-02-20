@@ -31,7 +31,7 @@ function TextWriter({
   onLogin,
   onSubmit,
 }: Props) {
-  const [value, setValue] = useInputValue<HTMLTextAreaElement>('');
+  const [value, setValue, setVal] = useInputValue<HTMLTextAreaElement>('');
 
   const submitButtonRef = useRef<HTMLButtonElement | null>(null);
   const handleSubmit = useCallback(() => {
@@ -41,7 +41,8 @@ function TextWriter({
     }
 
     onSubmit?.(value);
-  }, [value, onSubmit]);
+    setVal('');
+  }, [value, onSubmit, setVal]);
 
   return (
     <Wrapper className={className}>

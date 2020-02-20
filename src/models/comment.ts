@@ -1,4 +1,5 @@
 import { CommentLikeStatusResponse, CommentResponse } from '../remotes';
+import { User, userFromResponse } from './user';
 
 export interface Comment {
   id: number;
@@ -8,8 +9,11 @@ export interface Comment {
   dislikeCount: number;
   disliked: boolean;
   createdAt: string;
-  subComments: Array<Omit<Comment, 'subComments'>>;
+  user: User;
+  subComments: SubComment[];
 }
+
+export type SubComment = Omit<Comment, 'subComments'>;
 
 export type CommentLikeStatus = Pick<
   Comment,
@@ -30,6 +34,7 @@ export const commentsFromResponse = (response: CommentResponse[]): Comment[] => 
         disliked: data.disliked,
         createdAt: data.createdAt,
         subComments: [],
+        user: userFromResponse(data.user),
       });
     } else {
       const comment = comments.find(x => x.id === data.prev);
@@ -42,6 +47,7 @@ export const commentsFromResponse = (response: CommentResponse[]): Comment[] => 
         dislikeCount: data.dislike,
         disliked: data.disliked,
         createdAt: data.createdAt,
+        user: userFromResponse(data.user),
       });
     }
   }
