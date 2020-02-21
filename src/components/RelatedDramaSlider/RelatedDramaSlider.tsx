@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Drama } from '../../models';
+import { Drama, getHorizontalImage } from '../../models';
 import { Slider } from '../../ui/slider';
 import RelatedDramaSliderItem from './RelatedDramaSliderItem';
 
@@ -16,7 +16,7 @@ function RelatedDramaSlider({ dramas, className, onDramaClick }: Props) {
         <Slider.Item key={drama.id}>
           <RelatedDramaSliderItem
             title={drama.title}
-            imageUrl="https://druwa-repository-test.s3.ap-northeast-2.amazonaws.com/ios_small_123-1580750872815-204724.jpg"
+            imageUrl={getHorizontalImage(drama.images)}
             onClick={() => onDramaClick?.(drama)}
           />
         </Slider.Item>

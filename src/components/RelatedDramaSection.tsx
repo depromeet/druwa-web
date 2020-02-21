@@ -22,7 +22,7 @@ function RelatedDramaSection({ dramas, className, onDramaClick }: Props) {
   return (
     <Wrapper className={className}>
       <Card role="section">
-        <Card.Content>
+        <Card.Content verticalPadding={16}>
           <Title>연관 드라마</Title>
           <Slider dramas={dramas} onDramaClick={onDramaClick} />
         </Card.Content>
@@ -54,5 +54,6 @@ const Title = styled.h2`
 `;
 
 const Slider = styled(RelatedDramaSlider)`
-  padding: 12px 0;
+  padding: 12px 0 4px 0;
+  margin: 0 -16px;
 `;
