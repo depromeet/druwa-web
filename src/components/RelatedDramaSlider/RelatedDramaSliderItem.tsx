@@ -51,4 +51,5 @@ const Title = styled.span`
   height: 20px;
   color: ${selectForegroundColor('textPrimary')};
   ${cssTextEllipsis};
+  text-align: left;
 `;

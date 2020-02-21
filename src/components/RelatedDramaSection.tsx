@@ -46,7 +46,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  margin: 0;
+  margin: 0 0 4px 0;
   font-size: ${fontSizes.medium}px;
   font-weight: ${fontWeights.medium};
   line-height: ${lineHeights.condensed};
