@@ -89,6 +89,8 @@ export const dramaEpisodeReducer = createReducer<
           break;
         }
 
+        const comment = draft.comments[i];
+
         for (let j = 0; j < comment.subComments.length; j += 1) {
           if (comment.subComments[j].id === id) {
             draft.comments[i].subComments[j] = {
