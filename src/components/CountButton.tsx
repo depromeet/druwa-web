@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { LikeType } from '../models';
-import { cssButtonReset, fontSizes, fontWeights, selectForegroundColor, styled } from '../styles';
+import { cssButtonReset, fontSizes, fontWeights, styled } from '../styles';
 import { Icon } from '../ui/icon';
 import { formatKiloCount } from '../utils';
 
@@ -31,7 +31,7 @@ function CountButton({ type, count, activated, className, onClick }: Props) {
   return (
     <Button className={className} title={labelsByType[type]} aria-label={label} onClick={onClick}>
       <Icon name={iconName} size={24} aria-hidden={true} />
-      <Text>{formatKiloCount(count, 2)}</Text>
+      <Text activated={activated}>{formatKiloCount(count, 2)}</Text>
     </Button>
   );
 }
@@ -53,8 +53,8 @@ const Button = styled.button`
   }
 `;
 
-const Text = styled.span`
+const Text = styled.span<{ activated: boolean }>`
   font-size: ${fontSizes.regular}px;
   font-weight: ${fontWeights.medium};
-  color: ${selectForegroundColor('textPrimary')};
+  color: ${p => (p.activated ? p.theme.accent : p.theme.foreground.textPrimary)};
 `;
