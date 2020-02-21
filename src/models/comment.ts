@@ -22,6 +22,7 @@ export type CommentLikeStatus = Pick<
 
 export const commentsFromResponse = (response: CommentResponse[]): Comment[] => {
   const comments: Comment[] = [];
+  const subComments: CommentResponse[] = [];
 
   for (const data of response) {
     if (data.isRoot) {
@@ -37,19 +38,22 @@ export const commentsFromResponse = (response: CommentResponse[]): Comment[] => 
         user: userFromResponse(data.user),
       });
     } else {
-      const comment = comments.find(x => x.id === data.prev);
-
-      comment?.subComments.push({
-        id: data.id,
-        body: data.contents,
-        likeCount: data.like,
-        liked: data.liked,
-        dislikeCount: data.dislike,
-        disliked: data.disliked,
-        createdAt: data.createdAt,
-        user: userFromResponse(data.user),
-      });
+      subComments.push(data);
     }
+  }
+
+  for (const subComment of subComments) {
+    const comment = comments.find(x => x.id === subComment.prev);
+    comment?.subComments.push({
+      id: subComment.id,
+      body: subComment.contents,
+      likeCount: subComment.like,
+      liked: subComment.liked,
+      dislikeCount: subComment.dislike,
+      disliked: subComment.disliked,
+      createdAt: subComment.createdAt,
+      user: userFromResponse(subComment.user),
+    });
   }
 
   return comments;
