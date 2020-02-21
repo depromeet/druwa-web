@@ -1,5 +1,12 @@
 import { createAsyncAction } from 'typesafe-actions';
-import { Comment, CommentLikeStatus, Drama, DramaEpisode, LikeType } from '../../models';
+import {
+  Comment,
+  CommentLikeStatus,
+  Drama,
+  DramaEpisode,
+  DramaLikeStatus,
+  LikeType,
+} from '../../models';
 
 export const fetchDramaWithEpisodeActions = createAsyncAction(
   'drama-episode/FETCH_DRAMA_EPISODE',
@@ -31,6 +38,12 @@ export const fetchDramaEpisodeCommentsActions = createAsyncAction(
   'drama-episode/FETCH_DRAMA_EPISODE_COMMENTS_COMPLETE',
   'drama-episode/FETCH_DRAMA_EPISODE_COMMENTS_FAIL',
 )<{ dramaId: number; episodeId: number }, { comments: Comment[] }, { error: Error }>();
+
+export const patchDramaLikeActions = createAsyncAction(
+  'drama-episode/PATCH_DRAMA_LIKE',
+  'drama-episode/PATCH_DRAMA_LIKE_COMPLETE',
+  'drama-episode/PATCH_DRAMA_LIKE_FAIL',
+)<{ dramaId: number; like: LikeType }, { dramaLikeStatus: DramaLikeStatus }, { error: Error }>();
 
 export const patchDramaEpisodeCommentLikeActions = createAsyncAction(
   'drama-episode/PATCH_COMMENT_LIKE',

@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import DramaEpisodePlayer from '../components/DramaEpisodePlayer';
@@ -8,11 +8,12 @@ import DramaEpisodeSummaryCard from '../components/DramaEpisodeSummaryCard';
 import DramaEpisodeTitle from '../components/DramaEpisodeTitle';
 import RelatedDramaSection from '../components/RelatedDramaSection';
 import Spacing from '../components/Spacing';
-import { Drama, DramaEpisode, getHorizontalImage } from '../models';
+import { Drama, DramaEpisode, getHorizontalImage, LikeType } from '../models';
 import {
   fetchDramaEpisodeListActions,
   fetchDramaWithEpisodeActions,
   fetchRelatedDramasActions,
+  patchDramaLikeActions,
 } from '../stores/actions';
 import {
   selectDrama,
@@ -20,6 +21,7 @@ import {
   selectDramaEpisodeListWithoutCurrent,
   selectRelatedDramas,
   selectShouldFetchDramaEpisodeList,
+  selectUser,
 } from '../stores/selectors';
 import { lineHeights, selectForegroundColor, styled } from '../styles';
 import { Card } from '../ui/card';
@@ -27,12 +29,15 @@ import { Icon } from '../ui/icon';
 import { ContentWithAside } from '../ui/layout/ContentWithAside';
 import DramaEpisodeCommentSection from './DramaEpisodeCommentSection';
 import DramaEpisodeReviewSection from './DramaEpisodeReviewSection';
+import { LoginDialogContext } from './LoginDialogProvider';
 
 export default function DramaEpisodePage() {
   const { dramaId, episodeId } = useParams<{ dramaId: string; episodeId: string }>();
   const history = useHistory();
   const dispatch = useDispatch();
+  const loginDialog = useContext(LoginDialogContext);
 
+  const user = useSelector(selectUser);
   const drama = useSelector(selectDrama);
   const dramaEpisode = useSelector(selectDramaEpisode);
   const relatedDramas = useSelector(selectRelatedDramas);
@@ -58,6 +63,18 @@ export default function DramaEpisodePage() {
       history.push(`/drama/${dramaId}/episode/${episode.id}`);
     },
     [history, dramaId],
+  );
+
+  const handleDramaLikeClick = useCallback(
+    (like: LikeType) => {
+      if (user == null) {
+        loginDialog?.open();
+        return;
+      }
+
+      dispatch(patchDramaLikeActions.request({ dramaId: +dramaId, like }));
+    },
+    [loginDialog, user, dispatch, dramaId],
   );
 
   useEffect(() => {
@@ -103,10 +120,13 @@ export default function DramaEpisodePage() {
       >
         <ContentWithAside.Content>
           <DramaEpisodeSummaryCard
-            likeCount={dramaEpisode.likeCount}
-            dislikeCount={dramaEpisode.dislikeCount}
+            likeCount={drama.likeCount}
+            dislikeCount={drama.dislikeCount}
+            liked={drama.liked}
+            disliked={drama.disliked}
             productionCompanyName={drama.productionCompany}
             episodeSummary={dramaEpisode.summary}
+            onLike={handleDramaLikeClick}
           />
         </ContentWithAside.Content>
         <ContentWithAside.Aside>

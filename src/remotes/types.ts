@@ -47,7 +47,9 @@ export interface DramaResponse {
   productionCompany: string;
   images: ImageResponse[];
   like: number;
+  liked: boolean;
   dislike: number;
+  disliked: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -85,6 +87,14 @@ export interface CommentResponse {
 }
 
 export interface CommentLikeStatusResponse {
+  id: number;
+  like: number;
+  liked: boolean;
+  dislike: number;
+  disliked: boolean;
+}
+
+export interface DramaLikeStatusResponse {
   id: number;
   like: number;
   liked: boolean;

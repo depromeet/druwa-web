@@ -1,7 +1,7 @@
 import { Epic as EpicType } from 'redux-observable';
 import { Observable } from 'rxjs';
 import { ActionType, StateType } from 'typesafe-actions';
-import { Comment, CommentLikeStatus, Drama, DramaEpisode, User } from '../models';
+import { Comment, CommentLikeStatus, Drama, DramaEpisode, DramaLikeStatus, User } from '../models';
 import * as allActions from './actions';
 import { rootReducer } from './reducers';
 
@@ -11,7 +11,7 @@ export type State = StateType<typeof rootReducer>;
 
 type EpicApiDependency = Readonly<{
   authorize: (token: string) => Observable<User>;
-  fetchDrama: (dramaId: number) => Observable<Drama>;
+  fetchDrama: (dramaId: number, authToken?: string) => Observable<Drama>;
   fetchDramaEpisodeList: (dramaId: number) => Observable<DramaEpisode[]>;
   fetchDramaEpisode: (dramaId: number, episodeId: number) => Observable<DramaEpisode>;
   fetchRelatedDramas: (dramaId: number) => Observable<Drama[]>;
@@ -20,12 +20,14 @@ type EpicApiDependency = Readonly<{
     episodeId: number,
     authToken?: string,
   ) => Observable<Comment[]>;
+  patchDramaLike: (dramaId: number, authToken: string) => Observable<DramaLikeStatus>;
   patchDramaEpisodeCommentLike: (
     dramaId: number,
     episodeId: number,
     commentId: number,
     authToken: string,
   ) => Observable<CommentLikeStatus>;
+  patchDramaDislike: (dramaId: number, authToken: string) => Observable<DramaLikeStatus>;
   patchDramaEpisodeCommentDislike: (
     dramaId: number,
     episodeId: number,

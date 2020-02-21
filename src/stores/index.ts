@@ -6,6 +6,7 @@ import {
   commentsFromResponse,
   dramaEpisodeFromResponse,
   dramaFromResponse,
+  dramaLikeStatusFromResponse,
   userFromResponse,
 } from '../models';
 import {
@@ -14,8 +15,10 @@ import {
   fetchDramaEpisodeComments,
   fetchDramaEpisodeList,
   fetchRelatedDramas,
+  patchDramaDislike,
   patchDramaEpisodeCommentDislike,
   patchDramaEpisodeCommentLike,
+  patchDramaLike,
   requestAuthorize,
 } from '../remotes';
 import { rootEpic } from './epics';
@@ -28,7 +31,8 @@ const epicMiddleware = createEpicMiddleware<Actions, Actions, State, EpicDepende
   dependencies: {
     api: {
       authorize: token => requestAuthorize({ token }).pipe(map(userFromResponse)),
-      fetchDrama: dramaId => fetchDrama(dramaId).pipe(map(dramaFromResponse)),
+      fetchDrama: (dramaId, authToken) =>
+        fetchDrama(dramaId, authToken).pipe(map(dramaFromResponse)),
       fetchDramaEpisodeList: dramaId =>
         fetchDramaEpisodeList(dramaId).pipe(
           map(episodes => episodes.map(dramaEpisodeFromResponse)),
@@ -39,6 +43,10 @@ const epicMiddleware = createEpicMiddleware<Actions, Actions, State, EpicDepende
         fetchRelatedDramas(dramaId).pipe(map(dramas => dramas.map(dramaFromResponse))),
       fetchDramaEpisodeComments: (dramaId, episodeId, authToken) =>
         fetchDramaEpisodeComments(dramaId, episodeId, authToken).pipe(map(commentsFromResponse)),
+      patchDramaLike: (dramaId, authToken) =>
+        patchDramaLike(dramaId, authToken).pipe(map(dramaLikeStatusFromResponse)),
+      patchDramaDislike: (dramaId, authToken) =>
+        patchDramaDislike(dramaId, authToken).pipe(map(dramaLikeStatusFromResponse)),
       patchDramaEpisodeCommentLike: (dramaId, episodeId, commentId, authToken) =>
         patchDramaEpisodeCommentLike(dramaId, episodeId, commentId, authToken).pipe(
           map(commentLikeStatusFromResponse),

@@ -8,6 +8,7 @@ import {
   CreateCommentPayload,
   DramaCurationResponse,
   DramaEpisodeResponse,
+  DramaLikeStatusResponse,
   DramaResponse,
   LoginPayload,
   SignupOrLoginResponse,
@@ -28,8 +29,8 @@ export const oauthApiUrls = {
 const authorizationHeader = (token?: string): Record<string, string> =>
   token != null
     ? {
-      Authorization: `Bearer ${token}`,
-    }
+        Authorization: `Bearer ${token}`,
+      }
     : {};
 
 export function requestAuthorize(payload: WithToken) {
@@ -38,12 +39,16 @@ export function requestAuthorize(payload: WithToken) {
   });
 }
 
-export function fetchDrama(dramaId: number) {
-  return rxHttp.get<DramaResponse>(apiUrl(`/dramas/${dramaId}`));
+export function fetchDrama(dramaId: number, authToken?: string) {
+  return rxHttp.get<DramaResponse>(apiUrl(`/dramas/${dramaId}`), {
+    headers: authorizationHeader(authToken),
+  });
 }
 
-export function fetchDramaEpisode(dramaId: number, episodeId: number) {
-  return rxHttp.get<DramaEpisodeResponse>(apiUrl(`/dramas/${dramaId}/episodes/${episodeId}`));
+export function fetchDramaEpisode(dramaId: number, episodeId: number, authToken?: string) {
+  return rxHttp.get<DramaEpisodeResponse>(apiUrl(`/dramas/${dramaId}/episodes/${episodeId}`), {
+    headers: authorizationHeader(authToken),
+  });
 }
 
 export function fetchRelatedDramas(dramaId: number) {
@@ -81,6 +86,14 @@ export function fetchDramaEpisodeComments(dramaId: number, episodeId: number, au
   );
 }
 
+export function patchDramaLike(dramaId: number, authToken: string) {
+  return rxHttp
+    .patch<Omit<DramaLikeStatusResponse, 'id'>>(apiUrl(`/dramas/${dramaId}/like`), null, {
+      headers: authorizationHeader(authToken),
+    })
+    .pipe(map(response => ({ id: dramaId, ...response })));
+}
+
 export function patchDramaEpisodeCommentLike(
   dramaId: number,
   episodeId: number,
@@ -98,6 +111,14 @@ export function patchDramaEpisodeCommentLike(
       },
     )
     .pipe(map(response => ({ id: commentId, ...response })));
+}
+
+export function patchDramaDislike(dramaId: number, authToken: string) {
+  return rxHttp
+    .patch<Omit<DramaLikeStatusResponse, 'id'>>(apiUrl(`/dramas/${dramaId}/dislike`), null, {
+      headers: authorizationHeader(authToken),
+    })
+    .pipe(map(response => ({ id: dramaId, ...response })));
 }
 
 export function patchDramaEpisodeCommentDislike(

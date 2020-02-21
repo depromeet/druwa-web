@@ -17,17 +17,16 @@ const labelsByType = {
   dislike: '싫어요',
 };
 
-function CountButton({ type, count, className, onClick }: Props) {
+function CountButton({ type, count, activated, className, onClick }: Props) {
   const label = useMemo(() => `${labelsByType[type]} ${count}개`, [type, count]);
   const iconName = useMemo(() => {
-    // TODO: activated 처리
     switch (type) {
       case 'like':
-        return 'like';
+        return activated ? 'like-color' : 'like';
       case 'dislike':
-        return 'dislike';
+        return activated ? 'dislike-color' : 'dislike';
     }
-  }, [type]);
+  }, [type, activated]);
 
   return (
     <Button className={className} title={labelsByType[type]} aria-label={label} onClick={onClick}>

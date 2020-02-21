@@ -16,16 +16,21 @@ import {
   fetchDramaWithEpisodeActions,
   fetchRelatedDramasActions,
   patchDramaEpisodeCommentLikeActions,
+  patchDramaLikeActions,
 } from '../actions';
 import { Epic } from '../types';
 
-const fetchDramaEpisodeEpic: Epic = (action$, _, { api }) =>
+const fetchDramaEpisodeEpic: Epic = (action$, state$, { api }) =>
   action$.pipe(
     filter(isActionOf(fetchDramaWithEpisodeActions.request)),
     switchMap(action => {
       const { dramaId, episodeId } = action.payload;
+      const { token } = state$.value.auth;
 
-      return forkJoin([api.fetchDrama(dramaId), api.fetchDramaEpisode(dramaId, episodeId)]).pipe(
+      return forkJoin([
+        api.fetchDrama(dramaId, token ?? undefined),
+        api.fetchDramaEpisode(dramaId, episodeId),
+      ]).pipe(
         map(([drama, episode]) => fetchDramaWithEpisodeActions.success({ drama, episode })),
         catchError(error => of(fetchDramaWithEpisodeActions.failure({ error }))),
       );
@@ -78,6 +83,34 @@ const fetchDramaEpisodeCommentsEpic: Epic = (action$, state$, { api }) =>
     }),
   );
 
+const patchDramaLikeEpic: Epic = (action$, state$, { api }) =>
+  action$.pipe(
+    filter(isActionOf(patchDramaLikeActions.request)),
+    exhaustMap(action => {
+      const { dramaId, like } = action.payload;
+      const { token } = state$.value.auth;
+
+      if (token == null) {
+        return EMPTY;
+      }
+
+      switch (like) {
+        case 'like':
+          return api.patchDramaLike(dramaId, token).pipe(
+            map(dramaLikeStatus => patchDramaLikeActions.success({ dramaLikeStatus })),
+            catchError(error => of(patchDramaLikeActions.failure({ error }))),
+          );
+        case 'dislike':
+          return api.patchDramaDislike(dramaId, token).pipe(
+            map(dramaLikeStatus => patchDramaLikeActions.success({ dramaLikeStatus })),
+            catchError(error => of(patchDramaLikeActions.failure({ error }))),
+          );
+        default:
+          return EMPTY;
+      }
+    }),
+  );
+
 const patchDramaEpisodeCommentLikeEpic: Epic = (action$, state$, { api }) =>
   action$.pipe(
     filter(isActionOf(patchDramaEpisodeCommentLikeActions.request)),
@@ -116,5 +149,6 @@ export const dramaEpisodeEpic = combineEpics(
   fetchDramaEpisodeListEpic,
   handleInvalidDramaEpisodeErrorEpic,
   fetchDramaEpisodeCommentsEpic,
+  patchDramaLikeEpic,
   patchDramaEpisodeCommentLikeEpic,
 );

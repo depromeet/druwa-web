@@ -8,6 +8,7 @@ const {
   fetchRelatedDramasActions,
   fetchDramaEpisodeListActions,
   fetchDramaEpisodeCommentsActions,
+  patchDramaLikeActions,
   patchDramaEpisodeCommentLikeActions,
 } = dramaEpisodeActions;
 
@@ -61,6 +62,18 @@ export const dramaEpisodeReducer = createReducer<
   .handleAction(fetchDramaEpisodeCommentsActions.success, (state, action) =>
     produce(state, draft => {
       draft.comments = action.payload.comments;
+    }),
+  )
+  .handleAction(patchDramaLikeActions.success, (state, action) =>
+    produce(state, draft => {
+      const { id, ...update } = action.payload.dramaLikeStatus;
+
+      if (draft.drama != null) {
+        draft.drama = {
+          ...draft.drama,
+          ...update,
+        };
+      }
     }),
   )
   .handleAction(patchDramaEpisodeCommentLikeActions.success, (state, action) =>

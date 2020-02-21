@@ -1,5 +1,6 @@
 import { css } from '@emotion/core';
 import React, { memo } from 'react';
+import { LikeType } from '../models';
 import { fontSizes, lineHeights, selectForegroundColor, styled } from '../styles';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
@@ -9,19 +10,25 @@ import { DramaReviewSlider } from './DramaReviewSlider';
 
 interface Props {
   likeCount: number;
+  liked: boolean;
   dislikeCount: number;
+  disliked: boolean;
   productionCompanyName: string;
   episodeSummary: string;
   className?: string;
+  onLike?(like: LikeType): void;
   onShare?(): void;
 }
 
 function DramaEpisodeSummaryCard({
   likeCount,
+  liked,
   dislikeCount,
+  disliked,
   productionCompanyName,
   episodeSummary,
   className,
+  onLike,
   onShare,
 }: Props) {
   return (
@@ -29,8 +36,18 @@ function DramaEpisodeSummaryCard({
       <Card.Head>
         <Card.HeadLeft leftPadding={8}>
           <Likes>
-            <CountButton type="like" count={likeCount} activated={false} />
-            <CountButton type="dislike" count={dislikeCount} activated={false} />
+            <CountButton
+              type="like"
+              count={likeCount}
+              activated={liked}
+              onClick={() => onLike?.('like')}
+            />
+            <CountButton
+              type="dislike"
+              count={dislikeCount}
+              activated={disliked}
+              onClick={() => onLike?.('dislike')}
+            />
           </Likes>
         </Card.HeadLeft>
         <Card.HeadRight rightPadding={8}>
