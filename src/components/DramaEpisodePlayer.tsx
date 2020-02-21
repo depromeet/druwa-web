@@ -16,7 +16,7 @@ function DramaEpisodePlayer({ videoId, className }: Props) {
     playerVars: {
       autoplay: 0,
       color: 'white',
-      fs: 0,
+      fs: 1,
       enablejsapi: 1,
       origin: deployUrl,
     },
