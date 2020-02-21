@@ -79,13 +79,25 @@ export const dramaEpisodeReducer = createReducer<
   .handleAction(patchDramaEpisodeCommentLikeActions.success, (state, action) =>
     produce(state, draft => {
       const { id, ...update } = action.payload.commentLikeStatus;
-      const index = draft.comments.findIndex(comment => comment.id === id);
 
-      if (index > -1) {
-        draft.comments[index] = {
-          ...draft.comments[index],
-          ...update,
-        };
+      for (let i = 0; i < draft.comments.length; i += 1) {
+        if (draft.comments[i].id === id) {
+          draft.comments[i] = {
+            ...draft.comments[i],
+            ...update,
+          };
+          break;
+        }
+
+        for (let j = 0; j < comment.subComments.length; j += 1) {
+          if (comment.subComments[j].id === id) {
+            draft.comments[i].subComments[j] = {
+              ...draft.comments[i].subComments[j],
+              ...update,
+            };
+            break;
+          }
+        }
       }
     }),
   );
