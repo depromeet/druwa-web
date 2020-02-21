@@ -22,7 +22,3 @@ export const dramaFromResponse = (response: DramaResponse): Drama => ({
   dislikeCount: response.dislike,
   createdAt: response.createdAt,
 });
-
-export const getHorizontalImage = (drama: Drama) =>
-  drama.images.find(x => x.imageName === 's')?.imageUrl ??
-  '/assets/images/drama-episode-thumbnail-placeholder@3x.png';

@@ -92,4 +92,16 @@ export interface CommentLikeStatusResponse {
   disliked: boolean;
 }
 
+export interface DramaCurationItemResponse {
+  dramaId: number;
+  title: string;
+  productionCompany: string;
+  images: ImageResponse[];
+}
+
+export interface DramaCurationResponse {
+  dramas: DramaCurationItemResponse[];
+  total: number;
+}
+
 // Errors

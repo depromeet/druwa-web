@@ -119,7 +119,7 @@ export default function DramaEpisodePage() {
               {dramaEpisodes.map(episode => (
                 <DramaEpisodePlaylistItem
                   key={episode.id}
-                  thumbnailImageUrl={getHorizontalImage(drama)}
+                  thumbnailImageUrl={getHorizontalImage(drama.images)}
                   episodeNumber={episode.number}
                   episodeTitle={episode.title}
                   onClick={() => handleDramaEpisodeClick(episode)}

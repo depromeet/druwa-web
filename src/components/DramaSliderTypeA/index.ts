@@ -1,1 +1,1 @@
-export * from './DramaSliderTypeA';
+export { default as DramaSliderTypeA } from './DramaSliderTypeA';

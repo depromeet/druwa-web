@@ -6,6 +6,7 @@ import {
   CommentLikeStatusResponse,
   CommentResponse,
   CreateCommentPayload,
+  DramaCurationResponse,
   DramaEpisodeResponse,
   DramaResponse,
   LoginPayload,
@@ -159,4 +160,8 @@ export function appendDramaEpisodeComment(
       },
     },
   );
+}
+
+export function fetchCuration() {
+  return rxHttp.get<DramaCurationResponse>(apiUrl(`/curation/1`));
 }

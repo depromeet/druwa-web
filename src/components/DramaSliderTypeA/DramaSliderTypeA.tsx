@@ -1,3 +1,4 @@
+import { css } from '@emotion/core';
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -7,6 +8,7 @@ import {
   selectForegroundColor,
   styled,
 } from '../../styles';
+import { Icon } from '../../ui/icon';
 import { Slider2 } from '../../ui/slider2';
 import { DramaSliderTypeAItem } from './DramaSliderTypeAItem';
 
@@ -21,7 +23,7 @@ interface Props {
   children: ReactNode;
 }
 
-export function DramaSliderTypeA({
+export default function DramaSliderTypeA({
   title,
   count,
   size = 3,
@@ -48,14 +50,26 @@ export function DramaSliderTypeA({
         </TitleAnchor>
         <Buttons>
           <NavButton onClick={toPrevPage} disabled={page === 0}>
-            -
+            <Icon
+              name="arrow-next"
+              css={css`
+                transform: rotate(180deg);
+              `}
+            />
           </NavButton>
           <NavButton onClick={toNextPage} disabled={page === maxPage - 1}>
-            +
+            <Icon name="arrow-next" />
           </NavButton>
         </Buttons>
       </Head>
-      <Slider page={page} size={size} spacing={spacing}>
+      <Slider
+        page={page}
+        size={size}
+        spacing={spacing}
+        css={css`
+          min-height: 273px;
+        `}
+      >
         {children}
       </Slider>
     </section>
@@ -95,6 +109,8 @@ const NavButton = styled.button`
   border: none;
   margin: 0;
   background-color: ${colorPlatte.grey300};
+  display: inline-flex;
+  justify-content: center;
 
   &:not(:last-child) {
     margin-right: 10px;
