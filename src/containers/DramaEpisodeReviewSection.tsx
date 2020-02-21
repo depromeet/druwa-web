@@ -1,57 +1,92 @@
-import { subMinutes } from 'date-fns';
-import React, { useContext } from 'react';
+import { css } from '@emotion/core';
+import React, { memo, useCallback, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Review from '../components/Review';
+import ReviewRatingInput from '../components/ReviewRatingInput';
 import TextWriter from '../components/TextWriter';
-import { selectUser } from '../stores/selectors';
+import { createDramaReview } from '../remotes';
+import { selectAuthToken, selectDramaReviews, selectUser } from '../stores/selectors';
 import { styled } from '../styles';
 import { LoginDialogContext } from './LoginDialogProvider';
 
-export default function DramaEpisodeReviewSection() {
+interface Props {
+  dramaId: number;
+}
+
+function DramaEpisodeReviewSection({ dramaId }: Props) {
   const user = useSelector(selectUser);
+  const token = useSelector(selectAuthToken);
+  const reviews = useSelector(selectDramaReviews);
   const loginDialog = useContext(LoginDialogContext);
+
+  const [rating, setRating] = useState<number | null>(null);
+  const [clearRating, setClearRating] = useState(false);
+  const handleReviewSubmit = useCallback(
+    async (text: string) => {
+      if (token == null || rating == null) {
+        return;
+      }
+
+      setClearRating(false);
+
+      const lines = text.split('\n');
+
+      try {
+        await createDramaReview(
+          dramaId,
+          {
+            point: rating,
+            title: lines[0],
+            contents: lines.slice(1).join('\n'),
+          },
+          token,
+        );
+        alert('댓글이 등록되었습니다.');
+      } catch {
+        alert('리뷰 등록에 실패하였습니다!');
+      } finally {
+        setClearRating(true);
+      }
+    },
+    [token, rating, dramaId],
+  );
 
   return (
     <Wrapper>
+      <ReviewRatingInput
+        text="재밌으셨나요? 별점을 선택해주세요!"
+        clear={clearRating}
+        onChange={setRating}
+      />
       <TextWriter
         maxLength={1000}
         disabled={user === null}
         disabledText="리뷰를"
         placeholder="리뷰를 작성하세요"
+        formDisabled={rating == null}
         onLogin={() => loginDialog?.open()}
+        onSubmit={handleReviewSubmit}
+        css={css`
+          margin-top: 24px;
+        `}
       />
       <ReviewList>
-        <ReviewItem
-          writerName="나석주"
-          writerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-          body={`I appreciate the mods for changing the banners every so often and little memey jokes like "hiding in the alcoves" for subscribers and "executed by elder buff" for online redditors. I know that a lot of other communities do that too, but a majority of the subs I'm subscribed to don't care enough to update that every (or near every) patch or whenever something big in that community happens. Thank you for putting in the effort and taking the time to do these community threads, even when people don't like what you have to say.
-          That being said, I can't see the updated self-prop rule change discussion thread. If say, you are a cosplayer or streamer and you make a comment about something NOT related to cosplay or your stream and someone asks you a question related to your created content and you respond publicly, does that count as a self-promotion point?
-          `}
-          reviewRating={4}
-          createdAt={subMinutes(new Date(), 5).toString()}
-        />
-        <ReviewItem
-          writerName="나석주"
-          writerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-          body={`I appreciate the mods for changing the banners every so often and little memey jokes like "hiding in the alcoves" for subscribers and "executed by elder buff" for online redditors. I know that a lot of other communities do that too, but a majority of the subs I'm subscribed to don't care enough to update that every (or near every) patch or whenever something big in that community happens. Thank you for putting in the effort and taking the time to do these community threads, even when people don't like what you have to say.
-          That being said, I can't see the updated self-prop rule change discussion thread. If say, you are a cosplayer or streamer and you make a comment about something NOT related to cosplay or your stream and someone asks you a question related to your created content and you respond publicly, does that count as a self-promotion point?
-          `}
-          reviewRating={5}
-          createdAt={subMinutes(new Date(), 15).toString()}
-        />
-        <ReviewItem
-          writerName="나석주"
-          writerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-          body={`I appreciate the mods for changing the banners every so often and little memey jokes like "hiding in the alcoves" for subscribers and "executed by elder buff" for online redditors. I know that a lot of other communities do that too, but a majority of the subs I'm subscribed to don't care enough to update that every (or near every) patch or whenever something big in that community happens. Thank you for putting in the effort and taking the time to do these community threads, even when people don't like what you have to say.
-          That being said, I can't see the updated self-prop rule change discussion thread. If say, you are a cosplayer or streamer and you make a comment about something NOT related to cosplay or your stream and someone asks you a question related to your created content and you respond publicly, does that count as a self-promotion point?
-          `}
-          reviewRating={2}
-          createdAt={subMinutes(new Date(), 25).toString()}
-        />
+        {reviews.map(review => (
+          <ReviewItem
+            key={review.id}
+            writerName={review.user.name}
+            writerImageUrl={review.user.imageUrl ?? '/assets/icon/icon-user.svg'}
+            body={`${review.title}\n${review.body}`}
+            reviewRating={review.rating}
+            createdAt={review.createdAt}
+          />
+        ))}
       </ReviewList>
     </Wrapper>
   );
 }
+
+export default memo(DramaEpisodeReviewSection);
 
 const Wrapper = styled.div``;
 

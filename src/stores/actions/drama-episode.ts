@@ -6,6 +6,7 @@ import {
   DramaEpisode,
   DramaLikeStatus,
   LikeType,
+  Review,
 } from '../../models';
 
 export const fetchDramaWithEpisodeActions = createAsyncAction(
@@ -38,6 +39,12 @@ export const fetchDramaEpisodeCommentsActions = createAsyncAction(
   'drama-episode/FETCH_DRAMA_EPISODE_COMMENTS_COMPLETE',
   'drama-episode/FETCH_DRAMA_EPISODE_COMMENTS_FAIL',
 )<{ dramaId: number; episodeId: number }, { comments: Comment[] }, { error: Error }>();
+
+export const fetchDramaReviewsActions = createAsyncAction(
+  'drama-episode/FETCH_DRAMA_REVIEWS',
+  'drama-episode/FETCH_DRAMA_REVIEWS_COMPLETE',
+  'drama-episode/FETCH_DRAMA_REVIEWS_FAIL',
+)<{ dramaId: number }, { reviews: Review[] }, { error: Error }>();
 
 export const patchDramaLikeActions = createAsyncAction(
   'drama-episode/PATCH_DRAMA_LIKE',

@@ -6,11 +6,13 @@ import {
   CommentLikeStatusResponse,
   CommentResponse,
   CreateCommentPayload,
+  CreateReviewPayload,
   DramaCurationResponse,
   DramaEpisodeResponse,
   DramaLikeStatusResponse,
   DramaResponse,
   LoginPayload,
+  ReviewResponse,
   SignupOrLoginResponse,
   SignupPayload,
   UserResponse,
@@ -47,6 +49,12 @@ export function fetchDrama(dramaId: number, authToken?: string) {
 
 export function fetchDramaEpisode(dramaId: number, episodeId: number, authToken?: string) {
   return rxHttp.get<DramaEpisodeResponse>(apiUrl(`/dramas/${dramaId}/episodes/${episodeId}`), {
+    headers: authorizationHeader(authToken),
+  });
+}
+
+export function fetchDramaReviews(dramaId: number, authToken?: string) {
+  return rxHttp.get<ReviewResponse[]>(apiUrl(`/dramas/${dramaId}/reviews`), {
     headers: authorizationHeader(authToken),
   });
 }
@@ -181,6 +189,19 @@ export function appendDramaEpisodeComment(
       },
     },
   );
+}
+
+export function createDramaReview(
+  dramaId: number,
+  payload: CreateReviewPayload,
+  authToken: string,
+) {
+  return rxHttp.post<void>(apiUrl(`/dramas/${dramaId}/reviews`), payload, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...authorizationHeader(authToken),
+    },
+  });
 }
 
 let uniqueId = 0;

@@ -31,3 +31,5 @@ export const selectDramaEpisodeComments = createSelector(
   selectDramaEpisodeState,
   state => state.comments,
 );
+
+export const selectDramaReviews = createSelector(selectDramaEpisodeState, state => state.reviews);

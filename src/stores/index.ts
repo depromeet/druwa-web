@@ -7,6 +7,7 @@ import {
   dramaEpisodeFromResponse,
   dramaFromResponse,
   dramaLikeStatusFromResponse,
+  reviewFromResponse,
   userFromResponse,
 } from '../models';
 import {
@@ -14,6 +15,7 @@ import {
   fetchDramaEpisode,
   fetchDramaEpisodeComments,
   fetchDramaEpisodeList,
+  fetchDramaReviews,
   fetchRelatedDramas,
   patchDramaDislike,
   patchDramaEpisodeCommentDislike,
@@ -43,6 +45,8 @@ const epicMiddleware = createEpicMiddleware<Actions, Actions, State, EpicDepende
         fetchRelatedDramas(dramaId).pipe(map(dramas => dramas.map(dramaFromResponse))),
       fetchDramaEpisodeComments: (dramaId, episodeId, authToken) =>
         fetchDramaEpisodeComments(dramaId, episodeId, authToken).pipe(map(commentsFromResponse)),
+      fetchDramaReviews: (dramaId, authToken) =>
+        fetchDramaReviews(dramaId, authToken).pipe(map(reviews => reviews.map(reviewFromResponse))),
       patchDramaLike: (dramaId, authToken) =>
         patchDramaLike(dramaId, authToken).pipe(map(dramaLikeStatusFromResponse)),
       patchDramaDislike: (dramaId, authToken) =>

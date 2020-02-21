@@ -4,6 +4,7 @@ import koLocale from 'date-fns/locale/ko';
 import React, { memo, useMemo } from 'react';
 import { fontSizes, fontWeights, lineHeights, selectForegroundColor, styled } from '../styles';
 import { ProfileImage } from '../ui/profile-image';
+import { convertNewlineToJSX } from '../utils';
 import Rating from './Rating';
 
 interface Props {
@@ -30,7 +31,7 @@ function Review({ body, writerName, writerImageUrl, reviewRating, createdAt, cla
           <DistanceToNow>{distanceToNow}</DistanceToNow>
           <Rating rating={reviewRating} />
         </Title>
-        <Body>{body}</Body>
+        <Body>{convertNewlineToJSX(body)}</Body>
       </Content>
     </Wrapper>
   );

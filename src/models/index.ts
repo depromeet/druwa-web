@@ -5,3 +5,4 @@ export * from './drama-episode';
 export * from './comment';
 export * from './image';
 export * from './curation';
+export * from './review';

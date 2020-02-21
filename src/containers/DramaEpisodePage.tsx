@@ -11,6 +11,7 @@ import Spacing from '../components/Spacing';
 import { Drama, DramaEpisode, getHorizontalImage, LikeType } from '../models';
 import {
   fetchDramaEpisodeListActions,
+  fetchDramaReviewsActions,
   fetchDramaWithEpisodeActions,
   fetchRelatedDramasActions,
   patchDramaLikeActions,
@@ -19,6 +20,7 @@ import {
   selectDrama,
   selectDramaEpisode,
   selectDramaEpisodeListWithoutCurrent,
+  selectDramaReviews,
   selectRelatedDramas,
   selectShouldFetchDramaEpisodeList,
   selectUser,
@@ -43,6 +45,7 @@ export default function DramaEpisodePage() {
   const relatedDramas = useSelector(selectRelatedDramas);
   const shouldFetchDramaEpisodes = useSelector(selectShouldFetchDramaEpisodeList);
   const dramaEpisodes = useSelector(selectDramaEpisodeListWithoutCurrent);
+  const reviews = useSelector(selectDramaReviews);
 
   const [selectedTab, setSelectedTab] = useState<string>('comments');
 
@@ -87,6 +90,10 @@ export default function DramaEpisodePage() {
   }, [dramaId, episodeId, dispatch]);
 
   useEffect(() => {
+    dispatch(fetchDramaReviewsActions.request({ dramaId: +dramaId }));
+  }, [dispatch, dramaId]);
+
+  useEffect(() => {
     dispatch(fetchRelatedDramasActions.request({ dramaId: +dramaId }));
   }, [dramaId, dispatch]);
 
@@ -126,6 +133,7 @@ export default function DramaEpisodePage() {
             disliked={drama.disliked}
             productionCompanyName={drama.productionCompany}
             episodeSummary={dramaEpisode.summary}
+            reviews={reviews}
             onLike={handleDramaLikeClick}
           />
         </ContentWithAside.Content>
@@ -179,7 +187,7 @@ export default function DramaEpisodePage() {
                 <Indent />
                 <Tab selected={selectedTab === 'reviews'} onClick={() => setSelectedTab('reviews')}>
                   <TabIcon name="star" />
-                  리뷰 <b>82개</b>
+                  리뷰 <b>{reviews.length}개</b>
                 </Tab>
               </Tabs>
             </Card.Head>
@@ -187,7 +195,7 @@ export default function DramaEpisodePage() {
               {selectedTab === 'comments' ? (
                 <DramaEpisodeCommentSection dramaId={+dramaId} episodeId={+episodeId} />
               ) : null}
-              {selectedTab === 'reviews' ? <DramaEpisodeReviewSection /> : null}
+              {selectedTab === 'reviews' ? <DramaEpisodeReviewSection dramaId={+dramaId} /> : null}
             </Card.Content>
           </Card>
         </ContentWithAside.Content>

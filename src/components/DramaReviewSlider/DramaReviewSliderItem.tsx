@@ -97,8 +97,9 @@ const Title = styled.p`
 
   display: flex;
   text-overflow: ellipsis;
-  height: ${fontSizes.regular * lineHeights.normal * 2}px;
+  max-height: ${fontSizes.regular * lineHeights.normal * 2}px;
   overflow: hidden;
+  //noinspection CssUnknownProperty
   -webkit-line-clamp: 2;
   word-break: break-word;
 `;

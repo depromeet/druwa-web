@@ -17,7 +17,7 @@ import {
   patchDramaEpisodeCommentLikeActions,
 } from '../stores/actions';
 import { selectAuthToken, selectDramaEpisodeComments, selectUser } from '../stores/selectors';
-import { styled } from '../styles';
+import { selectForegroundColor, styled } from '../styles';
 import { LoginDialogContext } from './LoginDialogProvider';
 
 interface Props {
@@ -69,7 +69,7 @@ function DramaEpisodeCommentSection({ dramaId, episodeId }: Props) {
 
         alert('댓글이 등록되었습니다.');
       } catch (error) {
-        alert('에러가 발새하였습니다!');
+        alert('댓글 등록에 실패하였습니다!');
       } finally {
         dispatch(fetchDramaEpisodeCommentsActions.request({ dramaId, episodeId }));
       }
@@ -188,6 +188,10 @@ const CommentList = memo(
     onSubmit(text: string, comment: CommentModel): void;
     user: User | null;
   }) => {
+    if (comments.length === 0) {
+      return <Empty />;
+    }
+
     return (
       <div
         css={css`
@@ -208,3 +212,12 @@ const CommentList = memo(
     );
   },
 );
+
+const Empty = styled.p`
+  margin: 0;
+  padding: 70px 0;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.22;
+  color: ${selectForegroundColor('textSecondary')};
+`;

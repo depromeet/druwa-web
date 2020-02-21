@@ -26,6 +26,12 @@ export interface AppendCommentPayload {
   contents: string;
 }
 
+export interface CreateReviewPayload {
+  point: number;
+  title: string;
+  contents: string;
+}
+
 // Responses
 export interface UserResponse {
   name: string;
@@ -112,6 +118,15 @@ export interface DramaCurationItemResponse {
 export interface DramaCurationResponse {
   dramas: DramaCurationItemResponse[];
   total: number;
+}
+
+export interface ReviewResponse {
+  dramaReviewId: number;
+  point: number;
+  title: string;
+  contents: string;
+  createdAt: string;
+  user: UserResponse;
 }
 
 // Errors

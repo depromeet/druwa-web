@@ -16,6 +16,7 @@ interface Props {
   maxLength?: number;
   disabled?: boolean;
   disabledText?: ReactNode;
+  formDisabled?: boolean;
   placeholder?: string;
   className?: string;
   onLogin?(): void;
@@ -27,6 +28,7 @@ function TextWriter({
   disabled,
   disabledText = '댓글을',
   placeholder,
+  formDisabled,
   className,
   onLogin,
   onSubmit,
@@ -63,7 +65,13 @@ function TextWriter({
       </TextareaWrapper>
       <Tools>
         <MaxLength>{maxLength !== undefined ? `${value.length}/${maxLength}` : ''}</MaxLength>
-        <Button ref={submitButtonRef} color="dark" size={36} onClick={handleSubmit}>
+        <Button
+          ref={submitButtonRef}
+          color="dark"
+          size={36}
+          onClick={handleSubmit}
+          disabled={formDisabled}
+        >
           등록하기
         </Button>
       </Tools>
@@ -77,6 +85,7 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: ${selectBackgroundColor('textarea')};
   border-radius: 4px;
+  overflow: hidden;
 `;
 
 const TextareaWrapper = styled.div`

@@ -1,77 +1,36 @@
-import { subHours, subMinutes } from 'date-fns';
-import React from 'react';
+import React, { memo } from 'react';
+import { Review } from '../../models';
 import { selectBackgroundColor, styled } from '../../styles';
 import { Slider } from '../../ui/slider';
 import DramaReviewSliderItem from './DramaReviewSliderItem';
 
-export default function DramaReviewSlider() {
+interface Props {
+  reviews: Review[];
+  className?: string;
+}
+
+function DramaReviewSlider({ reviews, className }: Props) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Slider itemSize={283} spacing={16}>
-        <Slider.Item>
-          <DramaReviewSliderItem
-            title="1. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
-            body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
-            rating={4.5}
-            reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-            reviewerName="나석주"
-            createdAt={subMinutes(new Date(), 5).toString()}
-          />
-        </Slider.Item>
-        <Slider.Item>
-          <DramaReviewSliderItem
-            title="2. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
-            body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
-            rating={4.5}
-            reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-            reviewerName="나석주"
-            createdAt={subHours(new Date(), 2).toString()}
-          />
-        </Slider.Item>
-        <Slider.Item>
-          <DramaReviewSliderItem
-            title="3. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
-            body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
-            rating={4.5}
-            reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-            reviewerName="나석주"
-            createdAt={new Date().toString()}
-          />
-        </Slider.Item>
-        <Slider.Item>
-          <DramaReviewSliderItem
-            title="4. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
-            body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
-            rating={4.5}
-            reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-            reviewerName="나석주"
-            createdAt={new Date().toString()}
-          />
-        </Slider.Item>
-        <Slider.Item>
-          <DramaReviewSliderItem
-            title="5. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
-            body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
-            rating={4.5}
-            reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-            reviewerName="나석주"
-            createdAt={new Date().toString()}
-          />
-        </Slider.Item>
-        <Slider.Item>
-          <DramaReviewSliderItem
-            title="6. 서강준 미친 외모에 한번 놀라고, 스토리에 한번놀라고"
-            body="서강준 하드캐리 원맨쇼를 원한다면 강츄!"
-            rating={4.5}
-            reviewerImageUrl="https://avatars0.githubusercontent.com/u/13250888?s=460&v=4"
-            reviewerName="나석주"
-            createdAt={new Date().toString()}
-          />
-        </Slider.Item>
+        {reviews.map(review => (
+          <Slider.Item key={review.id}>
+            <DramaReviewSliderItem
+              title={review.title}
+              body={review.body}
+              rating={review.rating}
+              reviewerImageUrl={review.user.imageUrl ?? '/assets/icon/icon-user.svg'}
+              reviewerName={review.user.name}
+              createdAt={review.createdAt}
+            />
+          </Slider.Item>
+        ))}
       </Slider>
     </Wrapper>
   );
 }
+
+export default memo(DramaReviewSlider);
 
 const Wrapper = styled.div`
   background-color: ${selectBackgroundColor('base')};

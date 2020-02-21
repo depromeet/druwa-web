@@ -4,6 +4,7 @@ import {
   catchError,
   exhaustMap,
   filter,
+  flatMap,
   ignoreElements,
   map,
   switchMap,
@@ -13,6 +14,7 @@ import { isActionOf } from 'typesafe-actions';
 import {
   fetchDramaEpisodeCommentsActions,
   fetchDramaEpisodeListActions,
+  fetchDramaReviewsActions,
   fetchDramaWithEpisodeActions,
   fetchRelatedDramasActions,
   patchDramaEpisodeCommentLikeActions,
@@ -77,8 +79,27 @@ const fetchDramaEpisodeCommentsEpic: Epic = (action$, state$, { api }) =>
       const { token } = state$.value.auth;
 
       return api.fetchDramaEpisodeComments(dramaId, episodeId, token ?? undefined).pipe(
-        map(comments => fetchDramaEpisodeCommentsActions.success({ comments })),
+        flatMap(comments =>
+          of(
+            fetchDramaEpisodeCommentsActions.success({ comments }),
+            fetchDramaWithEpisodeActions.request({ dramaId, episodeId }),
+          ),
+        ),
         catchError(error => of(fetchDramaEpisodeCommentsActions.failure({ error }))),
+      );
+    }),
+  );
+
+const fetchDramaReviewsEpic: Epic = (action$, state$, { api }) =>
+  action$.pipe(
+    filter(isActionOf(fetchDramaReviewsActions.request)),
+    switchMap(action => {
+      const { dramaId } = action.payload;
+      const { token } = state$.value.auth;
+
+      return api.fetchDramaReviews(dramaId, token ?? undefined).pipe(
+        map(reviews => fetchDramaReviewsActions.success({ reviews })),
+        catchError(error => of(fetchDramaReviewsActions.failure({ error }))),
       );
     }),
   );
@@ -147,6 +168,7 @@ export const dramaEpisodeEpic = combineEpics(
   fetchDramaEpisodeEpic,
   fetchRelatedDramasEpisodeEpic,
   fetchDramaEpisodeListEpic,
+  fetchDramaReviewsEpic,
   handleInvalidDramaEpisodeErrorEpic,
   fetchDramaEpisodeCommentsEpic,
   patchDramaLikeEpic,

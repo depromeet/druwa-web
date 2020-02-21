@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import React, { memo } from 'react';
-import { LikeType } from '../models';
+import { LikeType, Review } from '../models';
 import { fontSizes, lineHeights, selectForegroundColor, styled } from '../styles';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
@@ -15,6 +15,7 @@ interface Props {
   disliked: boolean;
   productionCompanyName: string;
   episodeSummary: string;
+  reviews: Review[];
   className?: string;
   onLike?(like: LikeType): void;
   onShare?(): void;
@@ -27,6 +28,7 @@ function DramaEpisodeSummaryCard({
   disliked,
   productionCompanyName,
   episodeSummary,
+  reviews,
   className,
   onLike,
   onShare,
@@ -63,7 +65,7 @@ function DramaEpisodeSummaryCard({
           </Button>
         </Card.HeadRight>
       </Card.Head>
-      <DramaReviewSlider />
+      <DramaReviewSlider reviews={reviews} />
       <Card.Content
         css={css`
           min-height: 343px;

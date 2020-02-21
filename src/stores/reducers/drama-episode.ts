@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { ActionType, createReducer } from 'typesafe-actions';
-import { Comment, Drama, DramaEpisode } from '../../models';
+import { Comment, Drama, DramaEpisode, Review } from '../../models';
 import * as dramaEpisodeActions from '../actions/drama-episode';
 
 const {
@@ -8,6 +8,7 @@ const {
   fetchRelatedDramasActions,
   fetchDramaEpisodeListActions,
   fetchDramaEpisodeCommentsActions,
+  fetchDramaReviewsActions,
   patchDramaLikeActions,
   patchDramaEpisodeCommentLikeActions,
 } = dramaEpisodeActions;
@@ -19,6 +20,7 @@ export type DramaEpisodeState = Readonly<{
   episodeList: DramaEpisode[];
   relatedDramas: Drama[] | null;
   comments: Comment[];
+  reviews: Review[];
 }>;
 
 export const dramaEpisodeReducer = createReducer<
@@ -31,6 +33,7 @@ export const dramaEpisodeReducer = createReducer<
   episodeList: [] as DramaEpisode[],
   relatedDramas: null,
   comments: [] as Comment[],
+  reviews: [] as Review[],
 })
   .handleAction(fetchDramaWithEpisodeActions.request, state =>
     produce(state, draft => {
@@ -101,5 +104,10 @@ export const dramaEpisodeReducer = createReducer<
           }
         }
       }
+    }),
+  )
+  .handleAction(fetchDramaReviewsActions.success, (state, action) =>
+    produce(state, draft => {
+      draft.reviews = action.payload.reviews;
     }),
   );
