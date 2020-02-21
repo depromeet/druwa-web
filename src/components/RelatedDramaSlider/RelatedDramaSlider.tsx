@@ -11,7 +11,7 @@ interface Props {
 
 function RelatedDramaSlider({ dramas, className, onDramaClick }: Props) {
   return (
-    <Slider itemSize={112} spacing={16} className={className}>
+    <Slider itemSize={154} spacing={16} className={className}>
       {dramas.map(drama => (
         <Slider.Item key={drama.id}>
           <RelatedDramaSliderItem
