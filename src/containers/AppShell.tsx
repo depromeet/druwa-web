@@ -7,6 +7,7 @@ import { withRootStore } from '../stores';
 import { authorizeWithTokenWhichFromStorageAction } from '../stores/actions';
 import { selectIsAuthInitialized } from '../stores/selectors';
 import { defaultDarkTheme } from '../styles';
+import CurationPage from './CurationPage';
 import DramaEpisodePage from './DramaEpisodePage';
 import DramaFirstEpisodePage from './DramaFirstEpisodePage';
 import LandingPage from './LandingPage';
@@ -47,6 +48,9 @@ function AppShell() {
             </Route>
             <Route path="/oauth/check" exact={true}>
               <OAuthCheckPage />
+            </Route>
+            <Route path="/curation" exact={true}>
+              <CurationPage />
             </Route>
           </Switch>
         </Router>

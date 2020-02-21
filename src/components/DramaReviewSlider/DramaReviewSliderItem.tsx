@@ -46,8 +46,10 @@ function DramaReviewSliderItem({
         border="primary"
       />
       <Card>
-        <Title>{title}</Title>
-        <Body>{body}</Body>
+        <Content>
+          <Title>{title}</Title>
+          <Body>{body}</Body>
+        </Content>
         <Bottom>
           <BottomLeft>
             <Metadata highlight={true} marginRight={8}>
@@ -85,6 +87,10 @@ const Card = styled.div`
   width: 100%;
   height: 100%;
   white-space: normal;
+`;
+
+const Content = styled.div`
+  min-height: 64px;
 `;
 
 const Title = styled.p`

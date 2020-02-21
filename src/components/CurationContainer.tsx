@@ -11,16 +11,20 @@ interface Props {
 
 export default function CurationContainer({ marginTop, marginBottom, className, children }: Props) {
   return (
-    <Container marginTop={marginTop} marginBottom={marginBottom} className={className}>
-      {children}
-    </Container>
+    <Wrapper paddingTop={marginTop} paddingBottom={marginBottom} className={className}>
+      <Container>{children}</Container>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div<{ paddingTop?: string | number; paddingBottom?: string | number }>`
+  width: 100%;
+  padding-top: ${p => coerceCssPixelValue(p.paddingTop)};
+  padding-bottom: ${p => coerceCssPixelValue(p.paddingBottom)};
+`;
 
 const Container = styled.div<{ marginTop?: string | number; marginBottom?: string | number }>`
   max-width: ${layouts.container}px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: ${p => coerceCssPixelValue(p.marginTop)};
-  margin-bottom: ${p => coerceCssPixelValue(p.marginBottom)};
 `;

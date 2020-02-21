@@ -5,3 +5,4 @@ export * from './storage';
 export * from './typings';
 export * from './kilo-count';
 export * from './jsx';
+export * from './query-param';

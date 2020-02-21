@@ -45,8 +45,9 @@ export default function DramaSliderTypeA({
   return (
     <section className={className}>
       <Head spacing={spacing / 2}>
-        <TitleAnchor to="/drama/1/episode/74">
+        <TitleAnchor to={`/curation?title=${encodeURIComponent(title)}`}>
           <Title>{title}</Title>
+          <Icon name="arrow-next" />
         </TitleAnchor>
         <Buttons>
           <NavButton onClick={toPrevPage} disabled={page === 0}>
@@ -85,6 +86,7 @@ const Head = styled.div<{ spacing: number }>`
 
 const TitleAnchor = styled(Link)`
   display: inline-flex;
+  align-items: center;
   color: ${selectForegroundColor('textPrimary')};
   text-decoration: none;
 `;

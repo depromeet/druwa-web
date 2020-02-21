@@ -1,12 +1,13 @@
 import { css } from '@emotion/core';
 import React, { memo, useCallback, useContext, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Review from '../components/Review';
 import ReviewRatingInput from '../components/ReviewRatingInput';
 import TextWriter from '../components/TextWriter';
 import { createDramaReview } from '../remotes';
+import { fetchDramaReviewsActions } from '../stores/actions';
 import { selectAuthToken, selectDramaReviews, selectUser } from '../stores/selectors';
-import { styled } from '../styles';
+import { selectForegroundColor, styled } from '../styles';
 import { LoginDialogContext } from './LoginDialogProvider';
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
 }
 
 function DramaEpisodeReviewSection({ dramaId }: Props) {
+  const dispatch = useDispatch();
+
   const user = useSelector(selectUser);
   const token = useSelector(selectAuthToken);
   const reviews = useSelector(selectDramaReviews);
@@ -40,15 +43,16 @@ function DramaEpisodeReviewSection({ dramaId }: Props) {
             contents: lines.slice(1).join('\n'),
           },
           token,
-        );
-        alert('댓글이 등록되었습니다.');
+        ).toPromise();
+        alert('리뷰가 등록되었습니다.');
       } catch {
         alert('리뷰 등록에 실패하였습니다!');
       } finally {
         setClearRating(true);
+        dispatch(fetchDramaReviewsActions.request({ dramaId }));
       }
     },
-    [token, rating, dramaId],
+    [dispatch, token, rating, dramaId],
   );
 
   return (
@@ -70,18 +74,22 @@ function DramaEpisodeReviewSection({ dramaId }: Props) {
           margin-top: 24px;
         `}
       />
-      <ReviewList>
-        {reviews.map(review => (
-          <ReviewItem
-            key={review.id}
-            writerName={review.user.name}
-            writerImageUrl={review.user.imageUrl ?? '/assets/icon/icon-user.svg'}
-            body={`${review.title}\n${review.body}`}
-            reviewRating={review.rating}
-            createdAt={review.createdAt}
-          />
-        ))}
-      </ReviewList>
+      {reviews.length === 0 ? (
+        <Empty>등록된 리뷰가 없습니다.</Empty>
+      ) : (
+        <ReviewList>
+          {reviews.map(review => (
+            <ReviewItem
+              key={review.id}
+              writerName={review.user.name}
+              writerImageUrl={review.user.imageUrl ?? '/assets/icon/icon-user.svg'}
+              body={`${review.title}\n${review.body}`}
+              reviewRating={review.rating}
+              createdAt={review.createdAt}
+            />
+          ))}
+        </ReviewList>
+      )}
     </Wrapper>
   );
 }
@@ -96,4 +104,13 @@ const ReviewList = styled.div`
 
 const ReviewItem = styled(Review)`
   margin-bottom: 20px;
+`;
+
+const Empty = styled.p`
+  margin: 0;
+  padding: 70px 0;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.22;
+  color: ${selectForegroundColor('textSecondary')};
 `;

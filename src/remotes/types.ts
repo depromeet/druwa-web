@@ -111,8 +111,11 @@ export interface DramaLikeStatusResponse {
 export interface DramaCurationItemResponse {
   dramaId: number;
   title: string;
+  summary: string;
   productionCompany: string;
   images: ImageResponse[];
+  like: number;
+  liked: boolean;
 }
 
 export interface DramaCurationResponse {

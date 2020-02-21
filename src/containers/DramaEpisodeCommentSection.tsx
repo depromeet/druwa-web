@@ -189,7 +189,7 @@ const CommentList = memo(
     user: User | null;
   }) => {
     if (comments.length === 0) {
-      return <Empty />;
+      return <Empty>등록된 댓글이 없습니다.</Empty>;
     }
 
     return (
