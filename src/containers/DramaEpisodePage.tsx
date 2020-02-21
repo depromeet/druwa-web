@@ -171,7 +171,7 @@ export default function DramaEpisodePage() {
             </Card.Content>
           </Card>
         </ContentWithAside.Content>
-        <ContentWithAside.Aside>Aside</ContentWithAside.Aside>
+        <ContentWithAside.Aside />
       </ContentWithAside>
       <Spacing size={200} />
     </Wrapper>

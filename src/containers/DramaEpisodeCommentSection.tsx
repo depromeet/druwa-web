@@ -134,7 +134,9 @@ function CommentItemWithSubComments({
         dislikeCount={comment.dislikeCount}
         didUserLike={likeTypeFromComment(comment)}
         createdAt={comment.createdAt}
-        showSubCommentButton={true}
+        subCommentButtonText={
+          comment.subComments.length > 0 ? `댓글 ${comment.subComments.length}개` : '댓글'
+        }
         onSubCommentButtonClick={() => setShowSubComment(x => !x)}
         onLikeChange={like => onCommentLike(comment, like)}
       />

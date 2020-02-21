@@ -18,7 +18,7 @@ interface Props {
   dislikeCount: number;
   didUserLike?: LikeType;
   className?: string;
-  showSubCommentButton?: boolean;
+  subCommentButtonText?: string;
 
   onSubCommentButtonClick?(): void;
   onLikeChange?(like: LikeType): void;
@@ -32,7 +32,7 @@ function Comment({
   likeCount,
   dislikeCount,
   didUserLike,
-  showSubCommentButton = false,
+  subCommentButtonText,
   className,
   onSubCommentButtonClick,
   onLikeChange,
@@ -70,9 +70,9 @@ function Comment({
               {dislikeCount > 0 ? <Count>{formatKiloCount(dislikeCount)}</Count> : null}
             </LikeButtonWithCount>
           </div>
-          {showSubCommentButton ? (
+          {subCommentButtonText != null ? (
             <Button size={28} rounded={true} onClick={onSubCommentButtonClick}>
-              댓글
+              {subCommentButtonText}
             </Button>
           ) : null}
         </Tools>

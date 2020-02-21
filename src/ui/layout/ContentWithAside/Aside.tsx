@@ -3,7 +3,7 @@ import { ContentWithAsideContext } from './contexts';
 import { Aside } from './styles';
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
