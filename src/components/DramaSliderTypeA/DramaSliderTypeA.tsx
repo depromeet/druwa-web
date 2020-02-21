@@ -32,7 +32,7 @@ export default function DramaSliderTypeA({
   children,
 }: Props) {
   const [page, setPage] = useState(0);
-  const maxPage = useMemo(() => Math.floor(count / size), [count, size]);
+  const maxPage = useMemo(() => Math.ceil(count / size), [count, size]);
 
   const toPrevPage = useCallback(() => {
     setPage(page => page - 1);

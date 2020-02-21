@@ -6,14 +6,22 @@ import { DramaSliderTypeA } from '../components/DramaSliderTypeA';
 import { DramaSliderTypeB } from '../components/DramaSliderTypeB';
 import MainCarousel from '../components/MainCarousel';
 import MainFooter from '../components/MainFooter';
-import { curationsFromResponse, DramaCurationItem, getHorizontalImage } from '../models';
+import {
+  curationsFromResponse,
+  DramaCurationItem,
+  getHorizontalImage,
+  getVerticalImage,
+} from '../models';
 import { fetchCuration } from '../remotes';
 import MainHeader from './MainHeader';
 
 export default function MainPage() {
   const history = useHistory();
 
-  const curationItems = useCuration() ?? [];
+  const curation1Items = useCuration() ?? [];
+  const curation2Items = useCuration() ?? [];
+  const curation3Items = useCuration() ?? [];
+
   const handleCurationItemClick = useCallback(
     (item: DramaCurationItem) => {
       history.push(`/drama/${item.id}`);
@@ -26,8 +34,8 @@ export default function MainPage() {
       <MainHeader />
       <MainCarousel />
       <CurationContainer marginTop={100}>
-        <DramaSliderTypeA title="명작 클라스 한번에 몰아보기" count={curationItems.length}>
-          {curationItems.map(item => (
+        <DramaSliderTypeA title="명작 클라스 한번에 몰아보기" count={curation1Items.length}>
+          {curation1Items.map(item => (
             <DramaSliderTypeA.Item
               key={item.id}
               imageUrl={getHorizontalImage(item.images)}
@@ -39,131 +47,33 @@ export default function MainPage() {
         </DramaSliderTypeA>
       </CurationContainer>
       <CurationContainer marginTop={100}>
-        <DramaSliderTypeB title="이런 배우 어때요? 뉴페이스 등장!" size={4} count={12}>
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
+        <DramaSliderTypeB
+          title="이런 배우 어때요? 뉴페이스 등장!"
+          size={4}
+          count={curation2Items.length}
+        >
+          {curation2Items.map(item => (
+            <DramaSliderTypeB.Item
+              key={item.id}
+              imageUrl={getVerticalImage(item.images)}
+              subTitle={item.productionCompany}
+              title={item.title}
+              onClick={() => handleCurationItemClick(item)}
+            />
+          ))}
         </DramaSliderTypeB>
       </CurationContainer>
       <CurationContainer marginTop={100}>
         <DramaSliderTypeB title="한 겨울엔 마음이 따듯하게" size={4} count={12}>
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
-          <DramaSliderTypeB.Item
-            imageUrl="/assets/images/sample.png"
-            subTitle="플레이리스트"
-            title="사랑은 은하수처럼"
-          />
+          {curation3Items.map(item => (
+            <DramaSliderTypeB.Item
+              key={item.id}
+              imageUrl={getVerticalImage(item.images)}
+              subTitle={item.productionCompany}
+              title={item.title}
+              onClick={() => handleCurationItemClick(item)}
+            />
+          ))}
         </DramaSliderTypeB>
       </CurationContainer>
       <MainFooter />

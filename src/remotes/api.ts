@@ -28,8 +28,8 @@ export const oauthApiUrls = {
 const authorizationHeader = (token?: string): Record<string, string> =>
   token != null
     ? {
-        Authorization: `Bearer ${token}`,
-      }
+      Authorization: `Bearer ${token}`,
+    }
     : {};
 
 export function requestAuthorize(payload: WithToken) {
@@ -162,6 +162,8 @@ export function appendDramaEpisodeComment(
   );
 }
 
+let uniqueId = 0;
+
 export function fetchCuration() {
-  return rxHttp.get<DramaCurationResponse>(apiUrl(`/curation/1`));
+  return rxHttp.get<DramaCurationResponse>(apiUrl(`/curation/${uniqueId++}`));
 }
