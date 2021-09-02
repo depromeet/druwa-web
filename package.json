@@ -17,7 +17,7 @@
     "core-js": "^3.6.0",
     "date-fns": "^2.9.0",
     "emotion-theming": "^10.0.27",
-    "immer": "^5.1.0",
+    "immer": "^9.0.6",
     "intersection-observer": "^0.7.0",
     "lodash.chunk": "^4.2.0",
     "query-string": "5",
